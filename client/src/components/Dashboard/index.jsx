@@ -39,7 +39,7 @@ const Dashboard = () => {
           <IncomesGrid
             incomes={income}
             handleDeleteIncome={deleteIncome}
-            handleIncomeUpdate={updateIncome}
+            handleUpdateIncome={updateIncome}
           />
         );
       case "bills":
@@ -65,16 +65,14 @@ const Dashboard = () => {
         item
         xs={12}
         justifyContent={"center"}
-        style={{ height: "150px", maxWidth: "80%", margin: "auto" }}
-      >
+        style={{ height: "150px", maxWidth: "80%", margin: "auto" }}>
         <Grid
           container
           item
           xs={7}
           style={{ margin: "auto" }}
           rowSpacing={8}
-          className="app-container"
-        >
+          className="app-container">
           <Grid container item xs={7} className="total-income">
             <WithCaption caption={"Total Income"}>
               <Grid item xs={12}>
@@ -92,8 +90,7 @@ const Dashboard = () => {
             item
             xs={5}
             className="planning-period-date-picker"
-            style={{ marginTop: "auto" }}
-          >
+            style={{ marginTop: "auto" }}>
             <WithCaption caption={"Planning Period"}>
               <Grid item xs={12}>
                 <Dates />

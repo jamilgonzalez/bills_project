@@ -10,6 +10,30 @@ const useBudget = ({ startDate, endDate }) => {
   const [billsBreakdown, setBillsBreakdown] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
+  const updateIncome = async (incomeStream) => {
+    setIsLoading(true);
+    const {
+      data: {
+        data: { updateIncome: updatedIncomeStreams },
+      },
+    } = await axios.post(GRAPHQL_URL, {
+      query: `
+      mutation UpdateIncome($input: UpdateIncomeInput) {
+        updateIncome(input: $input) {
+          id
+          amount
+          frequency
+          nextPayDay
+          name
+        }
+      }`,
+      variables: { input: incomeStream },
+    });
+
+    setIncome(updatedIncomeStreams);
+    setIsLoading(false);
+  };
+
   const getIncomeAndBills = useCallback(async () => {
     setIsLoading(true);
     const {
@@ -24,7 +48,7 @@ const useBudget = ({ startDate, endDate }) => {
             amount
             frequency
             nextPayDay
-            description
+            name
           }
           bills {
             id
@@ -153,7 +177,7 @@ const useBudget = ({ startDate, endDate }) => {
             amount
             frequency
             nextPayDay
-            description
+            name
           }
         }
       `,
@@ -182,6 +206,7 @@ const useBudget = ({ startDate, endDate }) => {
     isLoading,
     updateBill,
     deleteIncome,
+    updateIncome,
   };
 };
 

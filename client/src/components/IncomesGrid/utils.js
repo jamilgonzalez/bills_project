@@ -1,14 +1,14 @@
 export const columns = [
-  { field: "description", headerName: "Name", width: 225 },
+  { field: "name", headerName: "Name", width: 225 },
   {
     field: "amount",
-    headerName: "Amont",
+    headerName: "Amount",
     type: "number",
     width: 150,
   },
   {
-    field: "payDay",
-    headerName: "Pay Day",
+    field: "nextPayDay",
+    headerName: "Next Payday",
     width: 150,
   },
 

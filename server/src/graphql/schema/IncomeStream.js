@@ -6,7 +6,7 @@ const {
   GraphQLID,
 } = require("graphql");
 
-const frequency = require("./Frequency");
+const Frequency = require("./Frequency");
 
 const IncomeStream = new GraphQLObjectType({
   name: "IncomeStream",
@@ -14,17 +14,17 @@ const IncomeStream = new GraphQLObjectType({
     id: {
       type: new GraphQLNonNull(GraphQLID),
     },
+    name: {
+      type: new GraphQLNonNull(GraphQLString),
+    },
     amount: {
       type: new GraphQLNonNull(GraphQLFloat),
     },
     frequency: {
-      type: new GraphQLNonNull(frequency),
+      type: new GraphQLNonNull(Frequency),
       description: "Cadence of paycheck (ex. weekly, bi-weekly).",
     },
     nextPayDay: {
-      type: GraphQLString,
-    },
-    description: {
       type: GraphQLString,
     },
   },

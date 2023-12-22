@@ -8,14 +8,14 @@ const budget = {
       amount: 1658.16,
       frequency: "WEEKLY",
       nextPayDay: "2023-12-21",
-      description: "Disney Streaming - local",
+      name: "Disney Streaming - local",
     },
     {
       id: "35d817b8-63be-4dc4-a7e3-7dfbc3cff361",
       amount: 165.92,
       frequency: "MONTHLY",
       nextPayDay: "2024-01-01",
-      description: "VA - local",
+      name: "VA - local",
     },
   ],
   bills: [
@@ -82,6 +82,20 @@ async function fetchIncomes() {
   });
 }
 
+async function updateIncomeStream(updatedIncome) {
+  return new Promise((resolve) => {
+    budget.incomes = budget.incomes.map((income) => {
+      if (income.id === updatedIncome.id) {
+        return updatedIncome;
+      } else {
+        return income;
+      }
+    });
+
+    return resolve(budget.incomes);
+  });
+}
+
 async function fetchBills(billFilter) {
   return new Promise((resolve) => {
     let res = budget.bills;
@@ -127,6 +141,7 @@ async function updateBill(updatedBill) {
 module.exports = {
   addIncome,
   addBill,
+  updateIncomeStream,
   deleteIncome,
   deleteBill,
   fetchIncomes,

@@ -27,7 +27,7 @@ const IncomesGrid = ({
     formState: { errors },
   } = useForm();
 
-  const { description, amount, nextPayDay, frequency } = getValues();
+  const { name, amount, nextPayDay, frequency } = getValues();
 
   const formFields = (
     <>
@@ -36,7 +36,7 @@ const IncomesGrid = ({
           fullWidth
           {...register("name", { required: true })}
           error={errors?.name}
-          defaultValue={description}
+          defaultValue={name}
           variant="standard"
           helperText="Name"
         />
@@ -62,7 +62,7 @@ const IncomesGrid = ({
           defaultValue={nextPayDay}
           type="date"
           variant="standard"
-          helperText="Pay Day"
+          helperText="Next Payday"
         />
       </Grid>
       <Grid item xs={4}>
@@ -72,8 +72,7 @@ const IncomesGrid = ({
             variant="standard"
             fullWidth
             label="Frequency"
-            defaultValue={frequency}
-          >
+            defaultValue={frequency}>
             {frequencyEnum.map((f) => {
               return (
                 <MenuItem key={f.value} value={f.value}>

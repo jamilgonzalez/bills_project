@@ -7,15 +7,17 @@ const app = require("./app");
 const schema = require("./graphql/schema");
 const { ApolloLandingPage } = require("./util");
 
-const { PORT = 4000, MONGO_URL } = process.env;
+const { PORT = 4000, MONGO_URL, ENV } = process.env;
 
 async function startApolloServer() {
-  try {
-    await mongoose.connect(MONGO_URL);
-    console.log("🚀 Connected to mongodb");
-  } catch (err) {
-    console.error(`Error connecting to mongodb - ${err}`);
-    throw Error("Error connecting to db");
+  if (ENV !== 'local') {
+    try {
+      await mongoose.connect(MONGO_URL);
+      console.log("🚀 Connected to mongodb");
+    } catch (err) {
+      console.error(`Error connecting to mongodb - ${err}`);
+      throw Error("Error connecting to db");
+    }
   }
 
   const server = new ApolloServer({ schema, plugins: [ApolloLandingPage] });

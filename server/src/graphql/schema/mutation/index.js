@@ -2,7 +2,7 @@ const { GraphQLObjectType } = require("graphql");
 
 const addNewBill = require("./addNewBill");
 const addNewIncome = require("./addNewIncome");
-const updateIncome = require('./updateIncome')
+const updateIncome = require("./updateIncome");
 const deleteBill = require("./deleteBill");
 const deleteIncome = require("./deleteIncome");
 const updateBill = require("./updateBill");
@@ -12,10 +12,10 @@ const mutation = new GraphQLObjectType({
   fields: () => ({
     ...addNewBill,
     ...addNewIncome,
-    ...updateIncome,
     ...deleteBill,
     ...deleteIncome,
     ...updateBill,
+    ...updateIncome,
   }),
 });
 

@@ -1,8 +1,9 @@
 const { GraphQLNonNull, GraphQLList } = require("graphql");
 
-const addNewIncomeResolver = require("./resolver");
-const addNewIncomeInput = require("./input");
 const IncomeStream = require("../../IncomeStream");
+
+const addNewIncomeInput = require("./addNewIncome.input");
+const addNewIncomeResolver = require("./addNewIncome.resolver");
 
 const addNewIncome = {
   addNewIncome: {

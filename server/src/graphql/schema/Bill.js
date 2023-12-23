@@ -4,7 +4,6 @@ const {
   GraphQLString,
   GraphQLFloat,
   GraphQLID,
-  GraphQLEnumType,
 } = require("graphql");
 
 const Frequency = require("./Frequency");
@@ -39,6 +38,7 @@ const Bill = new GraphQLObjectType({
     },
     sinkingFund: {
       type: SinkingFund,
+      // resolve: can probably fetch sf using the sinking fund id stored here?
     },
   },
 });

@@ -1,6 +1,8 @@
 const { GraphQLNonNull, GraphQLList, GraphQLID } = require("graphql");
+
 const IncomeStream = require("../../IncomeStream");
-const deleteIncomeResolver = require("./resolver");
+
+const deleteIncomeResolver = require("./deleteIncome.resolver");
 
 const deleteIncome = {
   deleteIncome: {

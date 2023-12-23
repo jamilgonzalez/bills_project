@@ -1,7 +1,8 @@
 const { GraphQLNonNull, GraphQLList, GraphQLID } = require("graphql");
+
 const Bill = require("../../Bill");
 
-const resolver = require("./resolver");
+const deleteBillResolver = require("./deleteBill.resolver");
 
 const deleteBill = {
   deleteBill: {
@@ -11,7 +12,7 @@ const deleteBill = {
         type: new GraphQLNonNull(GraphQLID),
       },
     },
-    resolve: resolver,
+    resolve: deleteBillResolver,
   },
 };
 

@@ -7,21 +7,14 @@ const {
 } = require("graphql");
 
 const Bill = require("../../Bill");
+
+const BillBreakdownInput = require("./billBreakdown.input");
 const BillBreakdownResolver = require("./billBreakdown.resolver");
 
-const PayAccount = new GraphQLObjectType({
-  name: "PayAccount",
-  fields: {
-    payAccount: {
-      type: GraphQLString,
-    },
-    amount: {
-      type: GraphQLFloat,
-    },
-  },
-});
+const PayAccount = require("./PayAccount");
+const payAccountResolver = require("./PayAccount/payAccount.resolver");
 
-const BillBreakdownType = new GraphQLObjectType({
+const BillBreakdown = new GraphQLObjectType({
   name: "BillBreakdown",
   fields: {
     startDate: {
@@ -38,22 +31,7 @@ const BillBreakdownType = new GraphQLObjectType({
     },
     payAccounts: {
       type: new GraphQLNonNull(new GraphQLList(PayAccount)),
-      resolve: ({ bills }) => {
-        const payAccountMap = new Map();
-
-        bills.forEach((bill) => {
-          const payAccountSum = payAccountMap.get(bill.payAccount);
-          if (payAccountSum) {
-            payAccountMap.set(bill.payAccount, payAccountSum + bill.amount);
-          } else {
-            payAccountMap.set(bill.payAccount, bill.amount);
-          }
-        });
-
-        return Array.from(payAccountMap.entries()).map(
-          ([payAccount, amount]) => ({ payAccount, amount })
-        );
-      },
+      resolve: payAccountResolver,
     },
     // TODO: add upcoming due dates based on date range and the bills current due date
     bills: {
@@ -62,21 +40,10 @@ const BillBreakdownType = new GraphQLObjectType({
   },
 });
 
-const BillBreakdownInput = {
-  startDate: {
-    type: new GraphQLNonNull(GraphQLString),
-  },
-  endDate: {
-    type: new GraphQLNonNull(GraphQLString),
-  },
-};
-
-const BillBreakdown = {
+module.exports = {
   billBreakdown: {
-    type: new GraphQLNonNull(BillBreakdownType),
+    type: new GraphQLNonNull(BillBreakdown),
     args: BillBreakdownInput,
     resolve: BillBreakdownResolver,
   },
 };
-
-module.exports = BillBreakdown;

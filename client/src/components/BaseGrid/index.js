@@ -1,6 +1,7 @@
 import { DataGrid, useGridApiRef } from "@mui/x-data-grid";
 import { useContext, useState } from "react";
 import { Grid, Button, Typography } from "@mui/material";
+import PlaylistAddTwoToneIcon from "@mui/icons-material/PlaylistAddTwoTone";
 
 import DeleteButton from "../DeleteButton";
 import EditModal from "../EditModal";
@@ -9,7 +10,7 @@ import { UpdateSnackbarContext } from "../../context";
 
 const BaseGrid = ({ rows, columns, editGridRowProps, modalProps }) => {
   const apiRef = useGridApiRef();
-  const { deleteRow, updateRow } = editGridRowProps;
+  const { addRow, deleteRow, updateRow } = editGridRowProps;
   const { title, fields, updateFormFields, submitForm } = modalProps;
   const [selectedRows, setSelectedRows] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,6 +19,18 @@ const BaseGrid = ({ rows, columns, editGridRowProps, modalProps }) => {
   return (
     rows && (
       <Grid container direction={"row"} item xs>
+        <Grid
+          container
+          item
+          xs={12}
+          sx={{ height: "40px" }}
+          justifyContent={"end"}>
+          <Button
+            startIcon={<PlaylistAddTwoToneIcon fontSize="large" />}
+            onClick={() => setIsModalOpen(true)}>
+            Add Row
+          </Button>
+        </Grid>
         <Grid item xs={12} sx={{ height: "40px" }}>
           <DeleteButton
             selectedRows={selectedRows}
@@ -64,8 +77,7 @@ const BaseGrid = ({ rows, columns, editGridRowProps, modalProps }) => {
         </Grid>
         <EditModal
           isOpen={isModalOpen}
-          handleClose={() => setIsModalOpen(false)}
-        >
+          handleClose={() => setIsModalOpen(false)}>
           <Grid container sx={{ padding: "15px" }} spacing={5}>
             <Grid item xs={12}>
               <Typography variant="h3">{title}</Typography>
@@ -78,16 +90,20 @@ const BaseGrid = ({ rows, columns, editGridRowProps, modalProps }) => {
             item
             xs={12}
             justifyContent={"flex-end"}
-            alignContent={"center"}
-          >
+            alignContent={"center"}>
             <Grid item xs={1}>
               <Button onClick={() => setIsModalOpen(false)}>Cancel</Button>
             </Grid>
             <Grid item xs={2}>
               <Button
                 onClick={submitForm(async (data) => {
+                  const isAddingNewRow = !data.id;
                   try {
-                    await updateRow(data);
+                    if (isAddingNewRow) {
+                      await addRow(data);
+                    } else {
+                      await updateRow(data);
+                    }
                     updateSnackbarState({
                       severity: "success",
                       message: `${data.name} has been updated successfully!`,
@@ -102,8 +118,7 @@ const BaseGrid = ({ rows, columns, editGridRowProps, modalProps }) => {
                       isOpen: true,
                     });
                   }
-                })}
-              >
+                })}>
                 Submit
               </Button>
             </Grid>

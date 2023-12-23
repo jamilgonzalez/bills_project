@@ -29,6 +29,10 @@ export const columns = [
 
 export const frequency = [
   {
+    value: "",
+    label: "Select Frequency...",
+  },
+  {
     value: "weekly",
     label: "Weekly",
   },

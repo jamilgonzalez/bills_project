@@ -17,6 +17,8 @@ const Dashboard = () => {
   const endDate = searchParams.get("endDate");
   const {
     income,
+    addIncome,
+    addBill,
     bills,
     deleteBill,
     isLoading,
@@ -40,6 +42,7 @@ const Dashboard = () => {
             incomes={income}
             handleDeleteIncome={deleteIncome}
             handleUpdateIncome={updateIncome}
+            handleAddIncome={addIncome}
           />
         );
       case "bills":
@@ -48,6 +51,7 @@ const Dashboard = () => {
             bills={bills}
             handleBillDelete={deleteBill}
             handleBillUpdate={updateBill}
+            handleAddBill={addBill}
           />
         );
       case "sinkingFund":

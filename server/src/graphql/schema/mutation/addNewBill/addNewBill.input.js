@@ -6,7 +6,6 @@ const {
 } = require("graphql");
 
 const Frequency = require("../../Frequency");
-const PaymentStatus = require("../../PaymentStatus");
 
 const addNewBillInput = {
   input: {
@@ -21,9 +20,6 @@ const addNewBillInput = {
         },
         dueDate: {
           type: new GraphQLNonNull(GraphQLString),
-        },
-        paymentStatus: {
-          type: new GraphQLNonNull(PaymentStatus),
         },
         payAccount: {
           type: new GraphQLNonNull(GraphQLString),

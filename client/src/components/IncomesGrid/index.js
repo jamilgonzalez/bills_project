@@ -60,6 +60,7 @@ const IncomesGrid = ({
         <TextField
           {...register("nextPayDay", { required: true })}
           defaultValue={nextPayDay}
+          error={errors?.nextPayDay}
           type="date"
           variant="standard"
           helperText="Next Payday"
@@ -68,8 +69,9 @@ const IncomesGrid = ({
       <Grid item xs={4}>
         <FormControl fullWidth>
           <Select
-            {...register("frequency")}
+            {...register("frequency", { required: true })}
             variant="standard"
+            error={errors?.frequency}
             fullWidth
             label="Frequency"
             defaultValue={frequency}>

@@ -27,6 +27,10 @@ const Bill = new GraphQLObjectType({
     },
     paymentStatus: {
       type: new GraphQLNonNull(PaymentStatus),
+      // todo: move this default value to when we add a bill
+      resolve: (source) => {
+        return source && source.paymentStatus ? source.paymentStatus : "UNPAID";
+      },
     },
     payAccount: {
       type: new GraphQLNonNull(GraphQLString),

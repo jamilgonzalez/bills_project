@@ -1,6 +1,6 @@
 const billsModel = require("../Bills/bills.model");
 
-async function BillBreakdownResolver(_parent, { startDate, endDate }) {
+async function resolver(_parent, { startDate, endDate }) {
   const bills = await billsModel.getBills({ startDate, endDate });
 
   return {
@@ -10,4 +10,4 @@ async function BillBreakdownResolver(_parent, { startDate, endDate }) {
   };
 }
 
-module.exports = BillBreakdownResolver;
+module.exports = resolver;

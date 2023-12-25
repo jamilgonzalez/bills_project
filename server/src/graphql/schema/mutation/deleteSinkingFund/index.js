@@ -1,6 +1,6 @@
 const { GraphQLList, GraphQLNonNull, GraphQLID } = require("graphql");
 
-const DeleteSinkingFundResolver = require("./deleteSinkingFund.resolver");
+const deleteSinkingFundResolver = require("./deleteSinkingFund.resolver");
 const SinkingFund = require("../../SinkingFund");
 
 const deleteSinkingFund = {
@@ -11,7 +11,7 @@ const deleteSinkingFund = {
         type: new GraphQLNonNull(GraphQLID),
       },
     },
-    resolve: DeleteSinkingFundResolver,
+    resolve: deleteSinkingFundResolver,
   },
 };
 

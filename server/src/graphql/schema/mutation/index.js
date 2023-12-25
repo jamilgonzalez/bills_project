@@ -12,7 +12,7 @@ const updateSinkingFund = require("./updateSinkingFund");
 
 const mutation = new GraphQLObjectType({
   name: "Mutation",
-  fields: () => ({
+  fields: {
     ...addNewBill,
     ...addNewIncome,
     ...addNewSinkingFund,
@@ -22,7 +22,7 @@ const mutation = new GraphQLObjectType({
     ...updateBill,
     ...updateIncome,
     ...updateSinkingFund,
-  }),
+  },
 });
 
 module.exports = mutation;

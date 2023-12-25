@@ -153,7 +153,7 @@ module.exports = {
   addSinkingFund,
   deleteBill,
   deleteIncome,
-  fetchBilßls,
+  fetchBills,
   fetchIncomes,
   updateBill,
   updateIncomeStream,

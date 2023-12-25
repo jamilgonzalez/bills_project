@@ -9,7 +9,7 @@ import {
   FormHelperText,
 } from "@mui/material";
 
-import { columns } from "./utils";
+import { columns, DEFAULT_FORM } from "./utils";
 import { frequency as frequencyEnum } from "../BillsGrid/utils";
 import BaseGrid from "../BaseGrid";
 
@@ -102,6 +102,7 @@ const IncomesGrid = ({
         title: "Income Streams",
         fields: formFields,
         updateFormFields: reset,
+        clearFormFields: () => reset(DEFAULT_FORM),
         submitForm: handleSubmit,
       }}
     />

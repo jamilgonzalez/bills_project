@@ -9,7 +9,7 @@ import {
   FormHelperText,
 } from "@mui/material";
 
-import { columns, frequency as frequencyEnum } from "./utils";
+import { columns, frequency as frequencyEnum, DEFAULT_FORM } from "./utils";
 
 import BaseGrid from "../BaseGrid";
 
@@ -79,8 +79,7 @@ const BillsGrid = ({
             variant="standard"
             fullWidth
             label="Frequency"
-            defaultValue={frequency}
-          >
+            defaultValue={frequency}>
             {frequencyEnum.map((f) => {
               return (
                 <MenuItem key={f.value} value={f.value}>
@@ -108,6 +107,7 @@ const BillsGrid = ({
         title: "Bills",
         fields: formFields,
         updateFormFields: reset,
+        clearFormFields: () => reset(DEFAULT_FORM),
         submitForm: handleSubmit,
       }}
     />

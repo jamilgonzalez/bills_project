@@ -47,24 +47,33 @@ const budget = {
       paymentStatus: "UNPAID",
     },
   ],
-  sinkingFunds: [],
+  sinkingFunds: [
+    {
+      id: "c3492840-a788-4e5c-8a38-6dc19d044962",
+      name: "Mortgage",
+      targetAmount: 2100.7,
+      totalSaved: 1070.81,
+      percentComplete: 0,
+      transactions: [],
+      endDate: "2024-02-01",
+    },
+  ],
 };
+
+async function addSinkingFund(sinkingFund) {
+  return new Promise((resolve) => {
+    budget.sinkingFunds.push({
+      ...sinkingFund,
+      id: uuid(),
+      transactions: [],
+    });
+    return resolve(budget.sinkingFunds);
+  });
+}
 
 async function addIncome(income) {
   return new Promise((resolve) => {
-    if (budget.incomes.find((dbIncome) => dbIncome.id === income.id)) {
-      budget.incomes = budget.incomes.map((dbIncome) => {
-        if ((dbIncome) => dbIncome.id === income.id) {
-          return {
-            ...dbIncome,
-            nextPayDay: income.nextPayDay,
-          };
-        }
-        return dbIncome;
-      });
-    } else {
-      budget.incomes.push({ ...income, id: uuid() });
-    }
+    budget.incomes.push({ ...income, id: uuid() });
     return resolve(budget.incomes);
   });
 }
@@ -139,12 +148,13 @@ async function updateBill(updatedBill) {
 }
 
 module.exports = {
-  addIncome,
   addBill,
-  updateIncomeStream,
-  deleteIncome,
+  addIncome,
+  addSinkingFund,
   deleteBill,
+  deleteIncome,
+  fetchBilßls,
   fetchIncomes,
-  fetchBills,
   updateBill,
+  updateIncomeStream,
 };

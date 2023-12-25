@@ -4,22 +4,11 @@ const {
   GraphQLString,
   GraphQLFloat,
   GraphQLID,
+  GraphQLList,
 } = require("graphql");
 
-const Transaction = new GraphQLObjectType({
-  name: "Transaction",
-  fields: {
-    date: {
-      type: new GraphQLNonNull(GraphQLString),
-    },
-    amount: {
-      type: new GraphQLNonNull(GraphQLFloat),
-    },
-    description: {
-      type: GraphQLString,
-    },
-  },
-});
+const Transaction = require("./Transaction");
+const { differenceInCalendarWeeks } = require("date-fns");
 
 const SinkingFund = new GraphQLObjectType({
   name: "SinkingFund",
@@ -30,18 +19,38 @@ const SinkingFund = new GraphQLObjectType({
     name: {
       type: new GraphQLNonNull(GraphQLString),
     },
-    dueDate: {
-      type: new GraphQLNonNull(GraphQLString),
-    },
     targetAmount: {
       type: new GraphQLNonNull(GraphQLFloat),
-      description: "Amount being saved.",
     },
     totalSaved: {
-      type: new GraphQLNonNull(GraphQLFloat),
+      type: GraphQLFloat,
+    },
+    percentComplete: {
+      type: GraphQLString,
+      resolve: (source) => {
+        return `${((source.totalSaved / source.targetAmount) * 100).toFixed(
+          2
+        )}%`;
+      },
+    },
+    weeklyContribution: {
+      type: GraphQLFloat,
+      resolve: ({ endDate, targetAmount, totalSaved = 0 }) => {
+        if (endDate) {
+          const numWeeksToSave = differenceInCalendarWeeks(
+            new Date(endDate),
+            Date.now()
+          );
+          return (targetAmount - totalSaved) / numWeeksToSave;
+        }
+        return endDate;
+      },
     },
     transactions: {
-      type: new GraphQLNonNull(Transaction),
+      type: new GraphQLList(Transaction),
+    },
+    endDate: {
+      type: GraphQLString,
     },
   },
 });

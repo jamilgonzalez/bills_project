@@ -49,3 +49,8 @@ export const frequency = [
     label: "Yearly",
   },
 ];
+
+export const DEFAULT_FORM = {
+  name: "",
+  frequency: "",
+};

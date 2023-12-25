@@ -18,3 +18,8 @@ export const columns = [
     type: "number",
   },
 ];
+
+export const DEFAULT_FORM = {
+  name: "",
+  frequency: "",
+};

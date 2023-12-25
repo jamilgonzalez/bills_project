@@ -11,7 +11,8 @@ import { UpdateSnackbarContext } from "../../context";
 const BaseGrid = ({ rows, columns, editGridRowProps, modalProps }) => {
   const apiRef = useGridApiRef();
   const { addRow, deleteRow, updateRow } = editGridRowProps;
-  const { title, fields, updateFormFields, submitForm } = modalProps;
+  const { title, fields, updateFormFields, clearFormFields, submitForm } =
+    modalProps;
   const [selectedRows, setSelectedRows] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const updateSnackbarState = useContext(UpdateSnackbarContext);
@@ -77,7 +78,10 @@ const BaseGrid = ({ rows, columns, editGridRowProps, modalProps }) => {
         </Grid>
         <EditModal
           isOpen={isModalOpen}
-          handleClose={() => setIsModalOpen(false)}>
+          handleClose={() => {
+            clearFormFields();
+            setIsModalOpen(false);
+          }}>
           <Grid container sx={{ padding: "15px" }} spacing={5}>
             <Grid item xs={12}>
               <Typography variant="h3">{title}</Typography>
@@ -92,7 +96,13 @@ const BaseGrid = ({ rows, columns, editGridRowProps, modalProps }) => {
             justifyContent={"flex-end"}
             alignContent={"center"}>
             <Grid item xs={1}>
-              <Button onClick={() => setIsModalOpen(false)}>Cancel</Button>
+              <Button
+                onClick={() => {
+                  clearFormFields();
+                  setIsModalOpen(false);
+                }}>
+                Cancel
+              </Button>
             </Grid>
             <Grid item xs={2}>
               <Button

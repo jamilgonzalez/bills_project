@@ -6,9 +6,111 @@ const GRAPHQL_URL = "http://localhost:3001/graphql";
 const useBudget = ({ startDate, endDate }) => {
   const [income, setIncome] = useState();
   const [bills, setBills] = useState();
+  const [sinkingFunds, setSinkingFunds] = useState();
   const [incomeBreakdown, setIncomeBreakdown] = useState();
   const [billsBreakdown, setBillsBreakdown] = useState();
   const [isLoading, setIsLoading] = useState(false);
+
+  const updateSinkingFund = async ({
+    id,
+    name,
+    targetAmount,
+    totalSaved,
+    endDate,
+  }) => {
+    setIsLoading(true);
+
+    const {
+      data: {
+        data: { updateSinkingFund: updatedSinkingFunds },
+      },
+    } = await axios.post(GRAPHQL_URL, {
+      query: `
+      mutation UpdateSinkingFund($input: UpdateSinkingFundInput) {
+        updateSinkingFund(input: $input) {
+          id
+          name
+          targetAmount
+          totalSaved
+          percentComplete
+          weeklyContribution
+          transactions {
+            date
+            amount
+            description
+          }
+          endDate
+        }
+      }`,
+      variables: { input: { id, name, targetAmount, totalSaved, endDate } },
+    });
+
+    setSinkingFunds(updatedSinkingFunds);
+    setIsLoading(false);
+  };
+
+  const deleteSinkingFund = async (id) => {
+    setIsLoading(true);
+
+    const {
+      data: {
+        data: { deleteSinkingFund: updatedSinkingFunds },
+      },
+    } = await axios.post(GRAPHQL_URL, {
+      query: `
+      mutation DeleteSinkingFund($id: ID!) {
+        deleteSinkingFund(id: $id) {
+          id
+          name
+          targetAmount
+          totalSaved
+          percentComplete
+          weeklyContribution
+          transactions {
+            date
+            amount
+            description
+          }
+          endDate
+        }
+      }`,
+      variables: { id },
+    });
+
+    setSinkingFunds(updatedSinkingFunds);
+    setIsLoading(false);
+  };
+
+  const addSinkingFund = async (sinkingFund) => {
+    setIsLoading(true);
+    const {
+      data: {
+        data: { addNewSinkingFund: updatedSinkingFunds },
+      },
+    } = await axios.post(GRAPHQL_URL, {
+      query: `
+      mutation AddNewSinkingFund($input: AddNewSinkingFundInput) {
+        addNewSinkingFund(input: $input) {
+          id
+          name
+          targetAmount
+          totalSaved
+          percentComplete
+          weeklyContribution
+          transactions {
+            date
+            amount
+            description
+          }
+          endDate
+        }
+      }`,
+      variables: { input: sinkingFund },
+    });
+
+    setSinkingFunds(updatedSinkingFunds);
+    setIsLoading(false);
+  };
 
   const addBill = async (bill) => {
     setIsLoading(true);
@@ -89,7 +191,7 @@ const useBudget = ({ startDate, endDate }) => {
     setIsLoading(true);
     const {
       data: {
-        data: { incomeStreams, bills },
+        data: { incomeStreams, bills, sinkingFunds },
       },
     } = await axios.post(GRAPHQL_URL, {
       query: `
@@ -110,12 +212,27 @@ const useBudget = ({ startDate, endDate }) => {
             payAccount
             frequency
           }
+          sinkingFunds {
+            id
+            name
+            targetAmount
+            totalSaved
+            percentComplete
+            weeklyContribution
+            transactions {
+              date
+              amount
+              description
+            }
+            endDate
+          }
         }
         `,
     });
 
     setIncome(incomeStreams);
     setBills(bills);
+    setSinkingFunds(sinkingFunds);
     setIsLoading(false);
   }, []);
 
@@ -249,17 +366,21 @@ const useBudget = ({ startDate, endDate }) => {
   }, [startDate, endDate, income, bills]);
 
   return {
-    addIncome,
     addBill,
+    addIncome,
+    addSinkingFund,
     bills,
+    billsBreakdown,
     deleteBill,
+    deleteIncome,
+    deleteSinkingFund,
     income,
     incomeBreakdown,
-    billsBreakdown,
     isLoading,
+    sinkingFunds,
     updateBill,
-    deleteIncome,
     updateIncome,
+    updateSinkingFund,
   };
 };
 

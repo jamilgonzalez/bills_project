@@ -59,7 +59,6 @@ const BaseGrid = ({ rows, columns, editGridRowProps, modalProps }) => {
           <DataGrid
             apiRef={apiRef}
             onRowDoubleClick={({ row }) => {
-              console.log(row);
               updateFormFields(row);
               setIsModalOpen(true);
             }}

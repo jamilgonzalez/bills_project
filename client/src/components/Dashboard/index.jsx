@@ -10,6 +10,7 @@ import BillsGrid from "../BillsGrid";
 import IncomesGrid from "../IncomesGrid";
 import AppSnackbar from "../AppSnackbar";
 import { SnackbarContextProvider } from "../../context";
+import SinkingFundGrid from "../SinkinFundGrid";
 
 const Dashboard = () => {
   const [searchParams] = useSearchParams();
@@ -26,6 +27,10 @@ const Dashboard = () => {
     updateBill,
     deleteIncome,
     updateIncome,
+    sinkingFunds,
+    addSinkingFund,
+    deleteSinkingFund,
+    updateSinkingFund,
   } = useBudget({
     startDate,
     endDate,
@@ -54,9 +59,15 @@ const Dashboard = () => {
             handleAddBill={addBill}
           />
         );
-      case "sinkingFund":
-        // TODO
-        return null;
+      case "sinkingFunds":
+        return (
+          <SinkingFundGrid
+            sinkingFunds={sinkingFunds}
+            handleAddSinkingFund={addSinkingFund}
+            handleDeleteSinkingFund={deleteSinkingFund}
+            handleUpdateSinkingFund={updateSinkingFund}
+          />
+        );
       default:
         return null;
     }

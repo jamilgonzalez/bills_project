@@ -60,6 +60,34 @@ const budget = {
   ],
 };
 
+async function updateSinkingFund(updatedSinkingFund) {
+  return new Promise((resolve) => {
+    budget.sinkingFunds = budget.sinkingFunds.map((sf) => {
+      if (sf.id === updatedSinkingFund.id) {
+        return {
+          ...sf,
+          ...updatedSinkingFund,
+        };
+      }
+      return sf;
+    });
+    return resolve(budget.sinkingFunds);
+  });
+}
+
+async function deleteSinkingFund(id) {
+  return new Promise((resolve) => {
+    budget.sinkingFunds = budget.sinkingFunds.filter((sf) => sf.id !== id);
+    return resolve(budget.sinkingFunds);
+  });
+}
+
+async function fetchSinkingFunds() {
+  return new Promise((resolve) => {
+    return resolve(budget.sinkingFunds);
+  });
+}
+
 async function addSinkingFund(sinkingFund) {
   return new Promise((resolve) => {
     budget.sinkingFunds.push({
@@ -95,7 +123,10 @@ async function updateIncomeStream(updatedIncome) {
   return new Promise((resolve) => {
     budget.incomes = budget.incomes.map((income) => {
       if (income.id === updatedIncome.id) {
-        return updatedIncome;
+        return {
+          ...income,
+          ...updatedIncome,
+        };
       } else {
         return income;
       }
@@ -139,7 +170,10 @@ async function updateBill(updatedBill) {
   return new Promise((resolve) => {
     budget.bills = budget.bills.map((bill) => {
       if (bill.id === updatedBill.id) {
-        return updatedBill;
+        return {
+          ...bill,
+          ...updatedBill,
+        };
       }
       return bill;
     });
@@ -153,8 +187,11 @@ module.exports = {
   addSinkingFund,
   deleteBill,
   deleteIncome,
+  deleteSinkingFund,
   fetchBills,
   fetchIncomes,
+  fetchSinkingFunds,
   updateBill,
   updateIncomeStream,
+  updateSinkingFund,
 };

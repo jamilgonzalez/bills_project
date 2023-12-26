@@ -6,7 +6,7 @@ const {
   GraphQLInputObjectType,
 } = require("graphql");
 
-const PaymentStatus = require("../../PaymentStatus");
+const PaymentType = require("../../PaymentType");
 const Frequency = require("../../Frequency");
 
 const TransactionInput = new GraphQLInputObjectType({
@@ -64,8 +64,8 @@ const updateBillInput = new GraphQLInputObjectType({
     dueDate: {
       type: GraphQLString,
     },
-    paymentStatus: {
-      type: PaymentStatus,
+    paymentType: {
+      type: PaymentType,
     },
     payAccount: {
       type: GraphQLString,

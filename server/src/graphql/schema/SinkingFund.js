@@ -26,11 +26,9 @@ const SinkingFund = new GraphQLObjectType({
       type: GraphQLFloat,
     },
     percentComplete: {
-      type: GraphQLString,
+      type: GraphQLFloat,
       resolve: (source) => {
-        return `${((source.totalSaved / source.targetAmount) * 100).toFixed(
-          2
-        )}%`;
+        return ((source.totalSaved / source.targetAmount) * 100).toFixed(2);
       },
     },
     weeklyContribution: {
@@ -43,7 +41,6 @@ const SinkingFund = new GraphQLObjectType({
           );
           return (targetAmount - totalSaved) / numWeeksToSave;
         }
-        return endDate;
       },
     },
     transactions: {

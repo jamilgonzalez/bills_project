@@ -45,7 +45,7 @@ const SinkingFundGrid = ({
             startAdornment: <InputAdornment position="start">$</InputAdornment>,
           }}
           variant="standard"
-          helperText="targetAmount"
+          helperText="Target Amount"
         />
       </Grid>
       <Grid item xs={4}>
@@ -60,18 +60,15 @@ const SinkingFundGrid = ({
             startAdornment: <InputAdornment position="start">$</InputAdornment>,
           }}
           variant="standard"
-          helperText="totalSaved"
+          helperText="Total Saved"
         />
       </Grid>
       <Grid item xs={4}>
         <TextField
-          {...register("endDate", {
-            required: true,
-          })}
-          error={errors?.endDate}
+          {...register("endDate")}
           defaultValue={endDate}
           variant="standard"
-          helperText="endDate"
+          helperText="End Date"
           type="date"
         />
       </Grid>

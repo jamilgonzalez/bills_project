@@ -11,7 +11,7 @@ const incomeModel = model("Income", INCOMES_SCHEMA);
 const billsModel = model("Bill", BILLS_SCHEMA);
 const sinkingFundsModel = model("SinkingFund", SINKING_FUNDS_SCHEMA);
 
-async function fetchIncomes() {
+async function fetchIncomeStreams() {
   try {
     return await incomeModel.find({}, { _id: 0, __v: 0 });
   } catch (err) {
@@ -25,11 +25,11 @@ async function addIncome(income) {
     await incomeModel.create([
       {
         ...income,
-        dueDate: new Date(income.dueDate).toISOString(),
+        nextPayDay: new Date(income.nextPayDay).toISOString(),
         id: uuid(),
       },
     ]);
-    return await fetchIncomes();
+    return await fetchIncomeStreams();
   } catch (error) {
     console.error(`Error adding income - ${error}`);
     throw Error("Unable to add income");
@@ -39,7 +39,7 @@ async function addIncome(income) {
 async function deleteIncome(id) {
   try {
     await incomeModel.deleteOne({ id });
-    return await fetchIncomes();
+    return await fetchIncomeStreams();
   } catch (error) {
     console.error(`Error deleting income - ${error}`);
     throw Error("Unable to delete income");
@@ -96,12 +96,76 @@ async function updateBill(updatedBill) {
   }
 }
 
+async function fetchSinkingFunds() {
+  try {
+    return await sinkingFundsModel.find({}, { _id: 0, __v: 0 });
+  } catch (error) {
+    console.error(`Error fetching sinking funds - ${error}`);
+    throw Error("Unable to fetch sinking funds");
+  }
+}
+
+async function addSinkingFund(sinkingFund) {
+  try {
+    await sinkingFundsModel.create([{ ...sinkingFund, id: uuid() }]);
+    return await fetchSinkingFunds();
+  } catch (error) {
+    console.error(`Error adding sinking fund - ${error}`);
+    throw Error("Unable to add sinking fund");
+  }
+}
+
+async function deleteSinkingFund(id) {
+  try {
+    await sinkingFundsModel.deleteOne({ id });
+    return await fetchSinkingFunds();
+  } catch (error) {
+    console.error(`Error deleting sinking fund - ${error}`);
+    throw Error("Unable to delete sinking fund");
+  }
+}
+
+async function updateSinkingFund(updatedSinkingFund) {
+  try {
+    await sinkingFundsModel.updateOne(
+      { id: updatedSinkingFund.id },
+      updatedSinkingFund
+    );
+    return await fetchSinkingFunds();
+  } catch (error) {
+    console.error(
+      `Error updating sinking fund with id ${updatedSinkingFund.id}`
+    );
+    throw Error("Unable to update sinking fund");
+  }
+}
+
+async function updateIncomeStream(updatedIncomeStream) {
+  try {
+    await incomeModel.updateOne(
+      { id: updatedIncomeStream.id },
+      updatedIncomeStream
+    );
+    return await fetchIncomeStreams();
+  } catch (error) {
+    console.error(
+      `Error updating income stream with id ${updatedIncomeStream.id}`
+    );
+    throw Error("Unable to update income stream");
+  }
+}
+
 module.exports = Object.freeze({
   addIncome,
   deleteIncome,
-  fetchIncomes,
+  fetchIncomeStreams,
   addBill,
   deleteBill,
   fetchBills,
   updateBill,
+  fetchSinkingFunds,
+  addSinkingFund,
+  deleteSinkingFund,
+  updateSinkingFund,
+  updateIncomeStream,
 });

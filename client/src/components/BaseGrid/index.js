@@ -1,5 +1,5 @@
 import { DataGrid, useGridApiRef } from "@mui/x-data-grid";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Grid, Button, Typography } from "@mui/material";
 import PlaylistAddTwoToneIcon from "@mui/icons-material/PlaylistAddTwoTone";
 
@@ -57,6 +57,8 @@ const BaseGrid = ({ rows, columns, editGridRowProps, modalProps }) => {
         </Grid>
         <Grid item xs={12}>
           <DataGrid
+            showCellVerticalBorder
+            rowCount={5}
             apiRef={apiRef}
             onRowDoubleClick={({ row }) => {
               updateFormFields(row);
@@ -69,8 +71,6 @@ const BaseGrid = ({ rows, columns, editGridRowProps, modalProps }) => {
             }}
             rows={rows}
             columns={columns}
-            hideFooterSelectedRowCount
-            autoHeight
             disableRowSelectionOnClick
             checkboxSelection
           />
@@ -107,15 +107,18 @@ const BaseGrid = ({ rows, columns, editGridRowProps, modalProps }) => {
               <Button
                 onClick={submitForm(async (data) => {
                   const isAddingNewRow = !data.id;
+                  let message;
                   try {
                     if (isAddingNewRow) {
                       await addRow(data);
+                      message = `${data.name} has been added successfully!`;
                     } else {
                       await updateRow(data);
+                      message = `${data.name} has been updated successfully!`;
                     }
                     updateSnackbarState({
                       severity: "success",
-                      message: `${data.name} has been updated successfully!`,
+                      message,
                       isOpen: true,
                     });
                     setIsModalOpen(false);
@@ -127,6 +130,7 @@ const BaseGrid = ({ rows, columns, editGridRowProps, modalProps }) => {
                       isOpen: true,
                     });
                   }
+                  clearFormFields();
                 })}>
                 Submit
               </Button>

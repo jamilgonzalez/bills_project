@@ -9,8 +9,8 @@ import {
   FormHelperText,
 } from "@mui/material";
 
-import { columns, DEFAULT_FORM } from "./utils";
-import { frequency as frequencyEnum } from "../BillsGrid/utils";
+import { columns, DEFAULT_FORM, frequencyEnum } from "./utils";
+
 import BaseGrid from "../BaseGrid";
 
 const IncomesGrid = ({

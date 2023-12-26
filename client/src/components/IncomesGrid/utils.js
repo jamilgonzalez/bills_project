@@ -23,3 +23,26 @@ export const DEFAULT_FORM = {
   name: "",
   frequency: "",
 };
+
+export const frequencyEnum = [
+  {
+    value: "",
+    label: "Select Frequency...",
+  },
+  {
+    value: "weekly",
+    label: "Weekly",
+  },
+  {
+    value: "monthly",
+    label: "Monthly",
+  },
+  {
+    value: "quarterly",
+    label: "Quarterly",
+  },
+  {
+    value: "yearly",
+    label: "Yearly",
+  },
+];

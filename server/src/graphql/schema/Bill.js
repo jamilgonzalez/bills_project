@@ -8,7 +8,7 @@ const {
 
 const Frequency = require("./Frequency");
 const SinkingFund = require("./SinkingFund");
-const PaymentStatus = require("./PaymentStatus");
+const PaymentType = require("./PaymentType");
 
 const Bill = new GraphQLObjectType({
   name: "Bill",
@@ -25,12 +25,8 @@ const Bill = new GraphQLObjectType({
     dueDate: {
       type: new GraphQLNonNull(GraphQLString),
     },
-    paymentStatus: {
-      type: new GraphQLNonNull(PaymentStatus),
-      // todo: move this default value to when we add a bill
-      resolve: (source) => {
-        return source && source.paymentStatus ? source.paymentStatus : "UNPAID";
-      },
+    paymentType: {
+      type: PaymentType,
     },
     payAccount: {
       type: new GraphQLNonNull(GraphQLString),

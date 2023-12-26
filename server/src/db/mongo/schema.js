@@ -2,10 +2,10 @@ const { Schema } = require("mongoose");
 
 const INCOMES_SCHEMA = new Schema({
   id: String,
+  name: String,
   amount: Number,
   frequency: String,
-  payDay: String,
-  description: String,
+  nextPayDay: String,
 });
 
 const BILLS_SCHEMA = new Schema({
@@ -14,15 +14,15 @@ const BILLS_SCHEMA = new Schema({
   amount: Number,
   dueDate: String,
   payAccount: String,
-  frequency: String,
+  paymentType: String,
 });
 
 const SINKING_FUNDS_SCHEMA = new Schema({
   id: String,
   name: String,
-  goal: Number,
+  targetAmount: Number,
   totalSaved: Number,
-  frequency: String,
+  endDate: String,
 });
 
 module.exports = {

@@ -14,39 +14,27 @@ export const columns = [
   {
     field: "payAccount",
     headerName: "Pay Account",
-    width: 100,
+    width: 150,
   },
   {
-    field: "frequency",
-    headerName: "Frequency",
-    type: "number",
-  },
-  {
-    field: "paymentStatus",
-    headerName: "Status",
+    field: "paymentType",
+    headerName: "Payment Type",
+    width: 150,
   },
 ];
 
-export const frequency = [
+export const paymentTypeEnum = [
   {
     value: "",
-    label: "Select Frequency...",
+    label: "Select Payment Type...",
   },
   {
-    value: "weekly",
-    label: "Weekly",
+    value: "manual",
+    label: "Manual",
   },
   {
-    value: "monthly",
-    label: "Monthly",
-  },
-  {
-    value: "quarterly",
-    label: "Quarterly",
-  },
-  {
-    value: "yearly",
-    label: "Yearly",
+    value: "autoPay",
+    label: "Auto Pay",
   },
 ];
 

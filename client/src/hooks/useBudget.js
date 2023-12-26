@@ -126,7 +126,7 @@ const useBudget = ({ startDate, endDate }) => {
           name
           amount
           dueDate
-          paymentStatus
+          paymentType
           payAccount
           frequency
         }
@@ -208,7 +208,7 @@ const useBudget = ({ startDate, endDate }) => {
             name
             amount
             dueDate
-            paymentStatus
+            paymentType
             payAccount
             frequency
           }
@@ -262,7 +262,7 @@ const useBudget = ({ startDate, endDate }) => {
               name
               amount
               dueDate
-              paymentStatus
+              paymentType
               payAccount
               frequency
             }
@@ -291,7 +291,7 @@ const useBudget = ({ startDate, endDate }) => {
           name
           amount
           dueDate
-          paymentStatus
+          paymentType
           payAccount
           frequency
         }
@@ -320,7 +320,7 @@ const useBudget = ({ startDate, endDate }) => {
           dueDate
           frequency
           payAccount
-          paymentStatus
+          paymentType
         }
       }
       `,

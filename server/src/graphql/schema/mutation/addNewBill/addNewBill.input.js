@@ -7,7 +7,7 @@ const {
 
 const Frequency = require("../../Frequency");
 
-const addNewBillInput = {
+const AddNewBillInput = {
   input: {
     type: new GraphQLInputObjectType({
       name: "BillInput",
@@ -32,4 +32,4 @@ const addNewBillInput = {
   },
 };
 
-module.exports = addNewBillInput;
+module.exports = AddNewBillInput;

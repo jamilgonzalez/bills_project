@@ -1,6 +1,6 @@
 const { GraphQLNonNull, GraphQLString } = require("graphql");
 
-const BillBreakdownInput = {
+const billBreakdownInput = {
   startDate: {
     type: new GraphQLNonNull(GraphQLString),
   },
@@ -9,4 +9,4 @@ const BillBreakdownInput = {
   },
 };
 
-module.exports = BillBreakdownInput;
+module.exports = billBreakdownInput;

@@ -1,7 +1,7 @@
-const billModel = require("../../query/Bills/bills.model");
+const db = require("../../../../db");
 
 async function updateBillResolver(_parent, { input }) {
-  return billModel.updateBill(input);
+  return db.updateBill(input);
 }
 
 module.exports = updateBillResolver;

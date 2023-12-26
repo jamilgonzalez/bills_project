@@ -1,4 +1,4 @@
-function resolver({ bills }) {
+function payAccountResolver({ bills }) {
   const payAccountMap = new Map();
 
   bills.forEach((bill) => {
@@ -16,4 +16,4 @@ function resolver({ bills }) {
   }));
 }
 
-module.exports = resolver;
+module.exports = payAccountResolver;

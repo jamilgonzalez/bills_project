@@ -9,12 +9,12 @@ const {
 const Bill = require("../../Bill");
 
 const BillBreakdownInput = require("./billBreakdown.input");
-const BillBreakdownResolver = require("./billBreakdown.resolver");
+const billBreakdownResolver = require("./billBreakdown.resolver");
 
 const PayAccount = require("./PayAccount");
 const payAccountResolver = require("./PayAccount/payAccount.resolver");
 
-const BillBreakdownType = new GraphQLObjectType({
+const BillBreakdown = new GraphQLObjectType({
   name: "BillBreakdown",
   fields: {
     startDate: {
@@ -40,12 +40,12 @@ const BillBreakdownType = new GraphQLObjectType({
   },
 });
 
-const BillBreakdown = {
+const BillBreakdownQuery = {
   billBreakdown: {
-    type: new GraphQLNonNull(BillBreakdownType),
+    type: new GraphQLNonNull(BillBreakdown),
     args: BillBreakdownInput,
-    resolve: BillBreakdownResolver,
+    resolve: billBreakdownResolver,
   },
 };
 
-module.exports = BillBreakdown;
+module.exports = BillBreakdownQuery;

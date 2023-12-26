@@ -1,12 +1,12 @@
 const { GraphQLNonNull, GraphQLList } = require("graphql");
 
-const BillResolver = require("./bills.resolver");
+const billsResolver = require("./bills.resolver");
 const Bill = require("../../Bill");
 
 const bills = {
   bills: {
     type: new GraphQLNonNull(new GraphQLList(Bill)),
-    resolve: BillResolver,
+    resolve: billsResolver,
   },
 };
 

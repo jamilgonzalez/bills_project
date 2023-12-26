@@ -26,7 +26,7 @@ const useBudget = ({ startDate, endDate }) => {
       },
     } = await axios.post(GRAPHQL_URL, {
       query: `
-      mutation UpdateSinkingFund($input: UpdateSinkingFundInput) {
+      mutation UpdateSinkingFund($input: UpdateSinkingFundInput!) {
         updateSinkingFund(input: $input) {
           id
           name

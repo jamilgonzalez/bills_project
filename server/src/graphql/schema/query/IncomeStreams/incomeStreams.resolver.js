@@ -1,7 +1,7 @@
-const model = require("./IncomeStreams.model");
+const db = require("../../../../db");
 
-async function IncomeStreamResolver() {
-  return await model.getIncomeStreams();
+async function incomeStreamResolver() {
+  return await db.fetchIncomeStreams();
 }
 
-module.exports = IncomeStreamResolver;
+module.exports = incomeStreamResolver;

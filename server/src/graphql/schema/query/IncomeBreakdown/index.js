@@ -1,16 +1,33 @@
 const { GraphQLObjectType, GraphQLNonNull, GraphQLFloat } = require("graphql");
 
 const DateRangeInput = require("../../DateRangeInput");
-const IncomeBreadownResolver = require("./incomeBreakdown.resolver");
 
-const IncomeBreakdownType = new GraphQLObjectType({
+const incomeBreadownResolver = require("./incomeBreakdown.resolver");
+const { differenceInCalendarWeeks } = require("date-fns");
+
+const FREQUENCY_MAP = {
+  WEEKLY: 1,
+  BIWEEKLY: 2,
+  MONTHLY: 4,
+  QUARTERLY: 12,
+  YEARLY: 52,
+};
+
+const IncomeBreakdown = new GraphQLObjectType({
   name: "IncomeBreakdown",
   fields: {
     netIncome: {
       type: new GraphQLNonNull(GraphQLFloat),
-      resolve: (parent) => {
-        const { incomes } = parent;
-        return incomes.reduce((acc, income) => acc + income.amount, 0);
+      resolve: ({ incomes, period }) => {
+        const numWeeks = differenceInCalendarWeeks(
+          new Date(period.endDate),
+          new Date(period.startDate)
+        );
+        return incomes.reduce(
+          (acc, income) =>
+            acc + income.amount * (numWeeks / FREQUENCY_MAP[income.frequency]),
+          0
+        );
       },
     },
     remainingIncome: {
@@ -20,12 +37,12 @@ const IncomeBreakdownType = new GraphQLObjectType({
   },
 });
 
-const IncomeBreakdown = {
+const IncomeBreakdownQuery = {
   incomeBreakdown: {
-    type: new GraphQLNonNull(IncomeBreakdownType),
+    type: new GraphQLNonNull(IncomeBreakdown),
     args: DateRangeInput,
-    resolve: IncomeBreadownResolver,
+    resolve: incomeBreadownResolver,
   },
 };
 
-module.exports = IncomeBreakdown;
+module.exports = IncomeBreakdownQuery;

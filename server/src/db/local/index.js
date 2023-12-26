@@ -113,7 +113,7 @@ async function deleteIncome(id) {
   });
 }
 
-async function fetchIncomes() {
+async function fetchIncomeStreams() {
   return new Promise((resolve) => {
     return resolve(budget.incomes);
   });
@@ -136,7 +136,7 @@ async function updateIncomeStream(updatedIncome) {
   });
 }
 
-async function fetchBills(billFilter) {
+async function fetchBills(billFilter = undefined) {
   return new Promise((resolve) => {
     let res = budget.bills;
     if (billFilter) {
@@ -189,7 +189,7 @@ module.exports = {
   deleteIncome,
   deleteSinkingFund,
   fetchBills,
-  fetchIncomes,
+  fetchIncomeStreams,
   fetchSinkingFunds,
   updateBill,
   updateIncomeStream,

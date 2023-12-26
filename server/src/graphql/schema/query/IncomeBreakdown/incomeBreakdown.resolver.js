@@ -10,9 +10,9 @@ const FREQUENCY_MAP = {
   YEARLY: 52,
 };
 
-async function resolver(_parent, { startDate, endDate }) {
+async function incomeBreakdownResolver(_parent, { startDate, endDate }) {
   const [incomes, bills] = await Promise.all([
-    db.fetchIncomes(),
+    db.fetchIncomeStreams(),
     db.fetchBills(),
   ]);
 
@@ -25,10 +25,6 @@ async function resolver(_parent, { startDate, endDate }) {
   //     end: new Date(endDate),
   //   });
   // });
-
-  // const netIncome = incomes.reduce((acc, income) => {
-  //   return acc + income.amount * (numWeeks / FREQUENCY_MAP[income.frequency]);
-  // }, 0);
 
   // const totalBills = billsInDateRange.reduce((acc, bill) => {
   //   const numPayPeriods = Math.floor(numWeeks / FREQUENCY_MAP[bill.frequency]);
@@ -46,7 +42,11 @@ async function resolver(_parent, { startDate, endDate }) {
   return {
     bills,
     incomes,
+    period: {
+      startDate,
+      endDate,
+    },
   };
 }
 
-module.exports = resolver;
+module.exports = incomeBreakdownResolver;

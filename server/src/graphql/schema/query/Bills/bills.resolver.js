@@ -1,7 +1,7 @@
-const model = require("./bills.model");
+const db = require("../../../../db");
 
-async function resolver() {
-  return await model.getBills();
+async function billsResolver() {
+  return await db.fetchBills();
 }
 
-module.exports = resolver;
+module.exports = billsResolver;

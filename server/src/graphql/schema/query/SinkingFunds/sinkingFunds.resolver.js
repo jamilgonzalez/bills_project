@@ -1,7 +1,7 @@
 const db = require("../../../../db");
 
-async function Resolver() {
+async function sinkingFundsResolver() {
   return await db.fetchSinkingFunds();
 }
 
-module.exports = Resolver;
+module.exports = sinkingFundsResolver;

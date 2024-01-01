@@ -9,8 +9,8 @@ const { ApolloLandingPage } = require("./util");
 
 const { PORT = 4000, MONGO_URL, ENV } = process.env;
 
-async function startApolloServer() {
-  if (ENV !== 'local') {
+async function connectToMongodb() {
+  if (ENV !== "local") {
     try {
       await mongoose.connect(MONGO_URL);
       console.log("🚀 Connected to mongodb");
@@ -19,12 +19,22 @@ async function startApolloServer() {
       throw Error("Error connecting to db");
     }
   }
+}
 
-  const server = new ApolloServer({ schema, plugins: [ApolloLandingPage] });
+const server = new ApolloServer({ schema, plugins: [ApolloLandingPage] });
 
+async function startApolloServer() {
+  await connectToMongodb();
+
+  // GRAPHQL
   await server.start();
-
-  app.use(expressMiddleware(server));
+  app.use(
+    expressMiddleware(server, {
+      context: ({ req }) => ({
+        isAuthenticated: req.isAuthenticated(),
+      }),
+    })
+  );
 
   app.listen(PORT, () => {
     console.log(`🚀 App listening on port ${PORT}...`);

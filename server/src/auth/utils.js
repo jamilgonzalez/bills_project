@@ -1,9 +1,10 @@
 function checkLoggedIn(req, res, next) {
-  // deserialize cookie and check / validate access token
   const isLoggedIn = req.isAuthenticated();
-  if (!isLoggedIn) {
-    return res.status(401).json({ errors: [{ message: "Unathorized" }] });
+
+  if (!isLoggedIn && req.url !== "/login") {
+    return res.redirect("/login");
   }
+
   next();
 }
 

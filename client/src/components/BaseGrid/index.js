@@ -8,7 +8,14 @@ import EditModal from "../EditModal";
 
 import { UpdateSnackbarContext } from "../../context";
 
-const BaseGrid = ({ rows, columns, editGridRowProps, modalProps }) => {
+const BaseGrid = ({
+  rows,
+  columns,
+  editGridRowProps,
+  modalProps,
+  canAddRow = true,
+  canDeleteRow = true,
+}) => {
   const apiRef = useGridApiRef();
   const { addRow, deleteRow, updateRow } = editGridRowProps;
   const { title, fields, updateFormFields, clearFormFields, submitForm } =
@@ -20,18 +27,22 @@ const BaseGrid = ({ rows, columns, editGridRowProps, modalProps }) => {
   return (
     rows && (
       <Grid container direction={"row"} item xs>
-        <Grid
-          container
-          item
-          xs={12}
-          sx={{ height: "40px" }}
-          justifyContent={"end"}>
-          <Button
-            startIcon={<PlaylistAddTwoToneIcon fontSize="large" />}
-            onClick={() => setIsModalOpen(true)}>
-            Add Row
-          </Button>
-        </Grid>
+        {canAddRow ? (
+          <Grid
+            container
+            item
+            xs={12}
+            sx={{ height: "40px" }}
+            justifyContent={"end"}>
+            <Button
+              startIcon={<PlaylistAddTwoToneIcon fontSize="large" />}
+              onClick={() => setIsModalOpen(true)}>
+              Add Row
+            </Button>
+          </Grid>
+        ) : (
+          <></>
+        )}
         <Grid item xs={12} sx={{ height: "40px" }}>
           <DeleteButton
             selectedRows={selectedRows}
@@ -58,7 +69,6 @@ const BaseGrid = ({ rows, columns, editGridRowProps, modalProps }) => {
         <Grid item xs={12}>
           <DataGrid
             showCellVerticalBorder
-            rowCount={5}
             apiRef={apiRef}
             onRowDoubleClick={({ row }) => {
               updateFormFields(row);
@@ -72,7 +82,7 @@ const BaseGrid = ({ rows, columns, editGridRowProps, modalProps }) => {
             rows={rows}
             columns={columns}
             disableRowSelectionOnClick
-            checkboxSelection
+            checkboxSelection={canDeleteRow}
           />
         </Grid>
         <EditModal

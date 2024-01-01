@@ -10,6 +10,8 @@ const googleStrategy = require("./auth/strategy/google");
 
 const authRouter = require("./routes/auth");
 
+const { checkLoggedIn } = require("./auth/utils");
+
 const app = express();
 
 // used only when user signs in using social auth
@@ -49,10 +51,13 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, "..", "public")));
 
-app.get("/", (_, res) => {
-  return res.sendFile(path.join(__dirname, "..", "public", "index.html"));
-});
+// routes
 
 app.use("/auth", authRouter);
+
+// client
+app.get(["/", "/dashboard", "/login"], checkLoggedIn, (_, res) => {
+  return res.sendFile(path.join(__dirname, "..", "public", "index.html"));
+});
 
 module.exports = app;

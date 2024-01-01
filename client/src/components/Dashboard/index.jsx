@@ -11,6 +11,7 @@ import IncomesGrid from "../IncomesGrid";
 import AppSnackbar from "../AppSnackbar";
 import { SnackbarContextProvider } from "../../context";
 import SinkingFundGrid from "../SinkinFundGrid";
+import BudgetingContainer from "../BudgetingContainer";
 
 const Dashboard = () => {
   const [searchParams] = useSearchParams();
@@ -38,9 +39,8 @@ const Dashboard = () => {
 
   function renderDataGrid(currentTab) {
     switch (currentTab) {
-      case "budeting":
-        // TODO
-        return null;
+      case "budgeting":
+        return <BudgetingContainer />;
       case "incomeStreams":
         return (
           <IncomesGrid

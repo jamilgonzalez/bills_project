@@ -9,6 +9,16 @@ const { ApolloLandingPage } = require("./util");
 
 const { PORT = 4000, MONGO_URL, ENV } = process.env;
 
+// function authorizationMiddleware(req, res, next) {
+//   if (req.user.id !== req.user.id) {
+//     return res.status(403).json({
+//       errors: [{ message: "You are not authorized to see this data" }],
+//     });
+//   }
+
+//   next();
+// }
+
 async function connectToMongodb() {
   if (ENV !== "local") {
     try {
@@ -29,8 +39,10 @@ async function startApolloServer() {
   // GRAPHQL
   await server.start();
   app.use(
+    // authorizationMiddleware,
     expressMiddleware(server, {
       context: ({ req }) => ({
+        user: req?.user,
         isAuthenticated: req.isAuthenticated(),
       }),
     })

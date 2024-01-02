@@ -1,7 +1,7 @@
 import { Avatar, Button, Grid, Typography } from "@mui/material";
 
 import googleIcon from "../../images/google_logo.png";
-// import xIcon from "../../images/x_logo_2.png";
+import xIcon from "../../images/x_logo_2.png";
 
 const Login = () => {
   const socialSigninButtons = [
@@ -15,27 +15,27 @@ const Login = () => {
       },
       text: "Sign in with Google",
     },
-    // {
-    //   href: "/auth/google",
-    //   startIcon: <Avatar src={xIcon} />,
-    //   sx: {
-    //     textTransform: "none",
-    //     backgroundColor: "black",
-    //     color: "white",
-    //     "&:hover": {
-    //       backgroundColor: "lightGrey",
-    //       color: "black",
-    //     },
-    //   },
-    //   text: "Sign in with 𝕏",
-    // },
+    {
+      href: "/auth/google",
+      startIcon: <Avatar src={xIcon} />,
+      sx: {
+        textTransform: "none",
+        backgroundColor: "black",
+        color: "white",
+        "&:hover": {
+          backgroundColor: "lightGrey",
+          color: "black",
+        },
+      },
+      text: "Sign in with 𝕏",
+    },
   ];
   return (
     <Grid
       container
       justifyContent={"center"}
       alignContent={"center"}
-      style={{ height: "inherit" }}
+      style={{ height: "75%" }}
       spacing={2}>
       <Grid
         justifyContent={"center"}

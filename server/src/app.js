@@ -16,7 +16,12 @@ const app = express();
 
 // used only when user signs in using social auth
 passport.serializeUser((user, done) => {
-  // takes the user we get back from google and we choose what fields to generate jwt with
+  // 1. use id to check if user exists
+  // 2a. if user does not exist in db, create user with id, email and avatar
+  // and then return done as seen below
+  // 2b. if user exists return done as seen below
+
+  // token will contain id, we will make sure on every request that the user is only requesting data (fetch requests will be by id) that match the id in token
   done(null, {
     id: user.id,
     email: user.emails[0].value,

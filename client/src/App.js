@@ -2,11 +2,12 @@ import { Grid, Typography } from "@mui/material";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Dashboard from "./components/Dashboard";
+import Login from "./components/Login";
 
 const router = createBrowserRouter([
   {
     path: "/login",
-    element: <h1>Login</h1>,
+    element: <Login />,
   },
   {
     path: "/dashboard",

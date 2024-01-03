@@ -1,11 +1,11 @@
 import { Grid, Typography } from "@mui/material";
 
-const WithCaption = ({ children, caption }) => {
+const WithCaption = ({ children, caption, justifyCaption = "" }) => {
   return (
     <>
       {children}
-      <Grid item xs={12}>
-        <Typography variant="body2" color={"grey"}>
+      <Grid container justifyContent={justifyCaption} item xs={12}>
+        <Typography variant="caption" color={"grey"}>
           {caption}
         </Typography>
       </Grid>

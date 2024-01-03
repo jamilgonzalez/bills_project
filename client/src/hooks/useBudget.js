@@ -5,45 +5,11 @@ const GRAPHQL_URL = "http://localhost:3001/graphql";
 
 const useBudget = ({ startDate, endDate }) => {
   const [income, setIncome] = useState();
-  const [user, setUser] = useState({
-    email: "jamil.a.gonzalez91@gmail.com",
-    accountId: "111851856177559868548",
-    avatar:
-      "https://lh3.googleusercontent.com/a-/ALV-UjUjYdYizUQL7bGuWQ3fNia_HRX4voZ_oerWMp7VIw7dJow=s96-c",
-  });
   const [bills, setBills] = useState();
   const [sinkingFunds, setSinkingFunds] = useState();
   const [incomeBreakdown, setIncomeBreakdown] = useState();
   const [billsBreakdown, setBillsBreakdown] = useState();
   const [isLoading, setIsLoading] = useState(false);
-
-  const fetchUser = async () => {
-    setIsLoading(true);
-    const { data } = await axios.post(GRAPHQL_URL, {
-      query: `
-      query User {
-        user {
-          email
-          accountId
-          avatar
-        }
-      }`,
-    });
-
-    console.log(data);
-
-    if (data.data) {
-      const {
-        data: { user },
-      } = data;
-      setUser(user);
-    }
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
 
   const updateSinkingFund = async ({
     id,
@@ -400,7 +366,6 @@ const useBudget = ({ startDate, endDate }) => {
   }, [startDate, endDate, income, bills]);
 
   return {
-    user,
     addBill,
     addIncome,
     addSinkingFund,

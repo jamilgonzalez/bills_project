@@ -1,8 +1,8 @@
-import { Grid, Typography } from "@mui/material";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
+import AppContainer from "./containers/AppContainer";
 
 const router = createBrowserRouter([
   {
@@ -11,17 +11,10 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <Dashboard />,
-    errorElement: (
-      <Grid
-        container
-        justifyContent={"center"}
-        alignContent={"center"}
-        style={{ height: "inherit" }}>
-        <Grid item xs={3} style={{ textAlign: "center" }}>
-          <Typography variant="h3">Page Not Found 😔</Typography>
-        </Grid>
-      </Grid>
+    element: (
+      <AppContainer>
+        <Dashboard />
+      </AppContainer>
     ),
   },
 ]);

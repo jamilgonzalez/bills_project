@@ -15,13 +15,13 @@ authRouter.get(
 authRouter.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "/failure",
+    failureRedirect: "/login#failed",
     successRedirect: "/dashboard",
     session: true,
   })
 );
 
-authRouter.get("/logout", (req, res, next) => {
+authRouter.post("/logout", (req, res, next) => {
   req.logOut((err) => {
     if (err) {
       console.error(`Error logging out - ${err}`);

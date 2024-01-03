@@ -11,6 +11,8 @@ const {
   updateSinkingFund,
 } = require("./sinkingFunds");
 
+const { fetchUser, createUser } = require("./user");
+
 const { addBudget, fetchBudget } = require("./budget");
 
 const incomeModel = model("Income", INCOMES_SCHEMA);
@@ -80,4 +82,6 @@ module.exports = Object.freeze({
   updateIncomeStream,
   addBudget,
   fetchBudget,
+  fetchUser,
+  createUser,
 });

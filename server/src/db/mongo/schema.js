@@ -23,13 +23,16 @@ const BUDGET_SCHEMA = new Schema({
 
 const USER_SCHEMA = new Schema({
   accountId: {
-    type: ObjectId,
+    type: String,
     default: v4(),
   },
   fullName: String,
   email: String,
   avatar: String,
-  householdId: String,
+  householdId: {
+    type: String,
+    default: v4(),
+  },
 });
 
 const HOUSEHOLD_SCHEMA = new Schema({

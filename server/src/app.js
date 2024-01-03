@@ -6,6 +6,8 @@ const passport = require("passport");
 const cookieSession = require("cookie-session");
 const { parsed: config } = require("dotenv").config();
 
+const db = require("./db");
+
 const googleStrategy = require("./auth/strategy/google");
 
 const authRouter = require("./routes/auth");
@@ -14,19 +16,29 @@ const { checkLoggedIn } = require("./auth/utils");
 
 const app = express();
 
-// used only when user signs in using social auth
-passport.serializeUser((user, done) => {
-  // 1. use id to check if user exists
-  // 2a. if user does not exist in db, create user with id, email and avatar
-  // and then return done as seen below
-  // 2b. if user exists return done as seen below
-
-  // token will contain id, we will make sure on every request that the user is only requesting data (fetch requests will be by id) that match the id in token
-  done(null, {
-    id: user.id,
+function parseGoogleUser(user) {
+  return {
+    accountId: user.id,
     email: user.emails[0].value,
     avatar: user.photos[0].value,
-  });
+  };
+}
+
+// used only when user signs in using social auth
+passport.serializeUser(async (user, done) => {
+  const billsUser = parseGoogleUser(user);
+  const exists = await db.fetchUser(billsUser.accountId);
+
+  if (!exists) {
+    try {
+      await db.createUser(billsUser);
+    } catch (error) {
+      console.log(`Error creating user from social sign in- ${error}`);
+      done(error);
+    }
+  }
+
+  done(null, { accountId: billsUser.accountId, email: billsUser.email });
 });
 
 // used on ever request post sign in

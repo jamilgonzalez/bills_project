@@ -5,6 +5,7 @@ const BillBreakdown = require("./BillBreakdown");
 const IncomeBreakdown = require("./IncomeBreakdown");
 const IncomeStreams = require("./IncomeStreams");
 const SinkingFunds = require("./SinkingFunds");
+const User = require("./User");
 
 const query = new GraphQLObjectType({
   name: "Query",
@@ -14,6 +15,7 @@ const query = new GraphQLObjectType({
     ...IncomeBreakdown,
     ...IncomeStreams,
     ...SinkingFunds,
+    ...User,
   },
 });
 

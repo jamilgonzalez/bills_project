@@ -1,8 +1,8 @@
 import { Grid, Typography } from "@mui/material";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import Dashboard from "./components/Dashboard";
-import Login from "./components/Login";
+import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
 
 const router = createBrowserRouter([
   {
@@ -11,7 +11,6 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-
     element: <Dashboard />,
     errorElement: (
       <Grid

@@ -5,7 +5,12 @@ const GRAPHQL_URL = "http://localhost:3001/graphql";
 
 const useBudget = ({ startDate, endDate }) => {
   const [income, setIncome] = useState();
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({
+    email: "jamil.a.gonzalez91@gmail.com",
+    accountId: "111851856177559868548",
+    avatar:
+      "https://lh3.googleusercontent.com/a-/ALV-UjUjYdYizUQL7bGuWQ3fNia_HRX4voZ_oerWMp7VIw7dJow=s96-c",
+  });
   const [bills, setBills] = useState();
   const [sinkingFunds, setSinkingFunds] = useState();
   const [incomeBreakdown, setIncomeBreakdown] = useState();
@@ -14,11 +19,7 @@ const useBudget = ({ startDate, endDate }) => {
 
   const fetchUser = async () => {
     setIsLoading(true);
-    const {
-      data: {
-        data: { user },
-      },
-    } = await axios.post(GRAPHQL_URL, {
+    const { data } = await axios.post(GRAPHQL_URL, {
       query: `
       query User {
         user {
@@ -29,7 +30,14 @@ const useBudget = ({ startDate, endDate }) => {
       }`,
     });
 
-    setUser(user);
+    console.log(data);
+
+    if (data.data) {
+      const {
+        data: { user },
+      } = data;
+      setUser(user);
+    }
     setIsLoading(false);
   };
 

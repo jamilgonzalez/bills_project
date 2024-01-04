@@ -17,10 +17,11 @@ const { checkLoggedIn } = require("./auth/utils");
 const app = express();
 
 function parseGoogleUser(user) {
+  const { email, sub: accountId, picture: avatar } = user._json;
   return {
-    accountId: user.id,
-    email: user.emails[0].value,
-    avatar: user.photos[0].value,
+    accountId,
+    email,
+    avatar,
   };
 }
 

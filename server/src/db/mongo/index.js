@@ -15,6 +15,12 @@ const { fetchUser, createUser } = require("./user");
 
 const { addBudget, fetchBudget } = require("./budget");
 
+const {
+  createHousehold,
+  fetchHousehold,
+  updateHousehold,
+} = require("./household");
+
 const incomeModel = model("Income", INCOMES_SCHEMA);
 
 async function fetchIncomeStreams() {
@@ -84,4 +90,7 @@ module.exports = Object.freeze({
   fetchBudget,
   fetchUser,
   createUser,
+  createHousehold,
+  fetchHousehold,
+  updateHousehold,
 });

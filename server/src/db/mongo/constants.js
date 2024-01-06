@@ -1,9 +1,15 @@
+const { v4 } = require("uuid");
+
 const BILL = {
-  id: String,
+  id: {
+    type: String,
+    default: v4(),
+  },
   name: String,
   amount: Number,
   dueDate: String,
   payAccount: String,
+  frequency: String,
   paymentType: String,
 };
 
@@ -21,7 +27,7 @@ const PAY_DAY = {
   amount: Number,
 };
 
-const BILL_PAY_SESSION = {
+const BUDGET = {
   start: String,
   end: String,
   paydays: [PAY_DAY],
@@ -29,14 +35,9 @@ const BILL_PAY_SESSION = {
   sinkingFunds: [SINKING_FUND],
 };
 
-const BUDGET = {
-  billPaySessions: [BILL_PAY_SESSION],
-};
-
 module.exports = {
   BILL,
   SINKING_FUND,
   PAY_DAY,
-  BILL_PAY_SESSION,
   BUDGET,
 };

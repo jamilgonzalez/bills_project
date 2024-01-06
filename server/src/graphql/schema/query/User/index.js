@@ -19,6 +19,9 @@ const User = new GraphQLObjectType({
     avatar: {
       type: new GraphQLNonNull(GraphQLString),
     },
+    householdId: {
+      type: new GraphQLNonNull(GraphQLID),
+    },
   },
 });
 

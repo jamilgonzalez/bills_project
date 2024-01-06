@@ -3,29 +3,44 @@ const {
   GraphQLInputObjectType,
   GraphQLString,
   GraphQLFloat,
+  GraphQLID,
 } = require("graphql");
 
 const Frequency = require("../../Frequency");
+const PaymentType = require("../../PaymentType");
 
 const AddNewBillInput = {
   input: {
     type: new GraphQLInputObjectType({
-      name: "BillInput",
+      name: "AddBillInput",
       fields: {
-        name: {
-          type: new GraphQLNonNull(GraphQLString),
+        householdId: {
+          type: new GraphQLNonNull(GraphQLID),
         },
-        amount: {
-          type: new GraphQLNonNull(GraphQLFloat),
-        },
-        dueDate: {
-          type: new GraphQLNonNull(GraphQLString),
-        },
-        payAccount: {
-          type: new GraphQLNonNull(GraphQLString),
-        },
-        frequency: {
-          type: new GraphQLNonNull(Frequency),
+        bill: {
+          type: new GraphQLInputObjectType({
+            name: "BillInput",
+            fields: {
+              name: {
+                type: new GraphQLNonNull(GraphQLString),
+              },
+              amount: {
+                type: new GraphQLNonNull(GraphQLFloat),
+              },
+              dueDate: {
+                type: new GraphQLNonNull(GraphQLString),
+              },
+              payAccount: {
+                type: new GraphQLNonNull(GraphQLString),
+              },
+              paymentType: {
+                type: new GraphQLNonNull(PaymentType),
+              },
+              frequency: {
+                type: new GraphQLNonNull(Frequency),
+              },
+            },
+          }),
         },
       },
     }),

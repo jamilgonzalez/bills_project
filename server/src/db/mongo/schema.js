@@ -2,7 +2,6 @@ const { Schema } = require("mongoose");
 
 const { BILL, SINKING_FUND, BUDGET } = require("./constants");
 const { v4 } = require("uuid");
-const { ObjectId } = require("mongodb");
 
 const INCOMES_SCHEMA = new Schema({
   id: String,
@@ -29,18 +28,15 @@ const USER_SCHEMA = new Schema({
   fullName: String,
   email: String,
   avatar: String,
-  householdId: {
-    type: String,
-    default: v4(),
-  },
+  householdId: String,
 });
 
 const HOUSEHOLD_SCHEMA = new Schema({
-  id: {
-    type: String,
-    default: v4(),
+  id: String,
+  activeBudget: {
+    type: BUDGET,
+    default: undefined,
   },
-  activeBudget: BUDGET,
   archivedBudgets: {
     type: [BUDGET],
     default: [],

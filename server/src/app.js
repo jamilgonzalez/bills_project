@@ -29,7 +29,8 @@ passport.serializeUser(async (user, done) => {
 
   if (!exists) {
     try {
-      await db.createUser(billsUser);
+      const { id } = await db.createHousehold();
+      await db.createUser({ ...billsUser, householdId: id });
     } catch (error) {
       console.log(`Error creating user from social sign in- ${error}`);
       done(error);

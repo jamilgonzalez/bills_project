@@ -7,12 +7,9 @@ const cookieSession = require("cookie-session");
 const { parsed: config } = require("dotenv").config();
 
 const db = require("./db");
-
-const googleStrategy = require("./auth/strategy/google");
-
 const authRouter = require("./routes/auth");
-
 const { checkLoggedIn } = require("./auth/utils");
+const googleStrategy = require("./auth/strategy/google");
 
 const app = express();
 

@@ -9,6 +9,7 @@ import {
   AppBar,
   Toolbar,
   Divider,
+  Skeleton,
 } from "@mui/material";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import Logout from "@mui/icons-material/Logout";
@@ -18,7 +19,7 @@ import { useState } from "react";
 
 import WithCaption from "../WithCaption";
 
-const TopNavBar = ({ user }) => {
+const TopNavBar = ({ user, isLoading }) => {
   let navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -52,7 +53,11 @@ const TopNavBar = ({ user }) => {
               aria-controls={open ? "account-menu" : undefined}
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}>
-              <Avatar src={user?.avatar} sx={{ width: 32, height: 32 }} />
+              {isLoading ? (
+                <Skeleton variant="circular" width={32} height={32} />
+              ) : (
+                <Avatar src={user?.avatar} sx={{ width: 32, height: 32 }} />
+              )}
             </IconButton>
           </Grid>
 

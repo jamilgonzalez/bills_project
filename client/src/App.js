@@ -1,7 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { lazy } from "react";
-
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import AppContainer from "./containers/AppContainer";

@@ -7,7 +7,6 @@ import useBudget from "../../hooks/useBudget";
 import { USDollar } from "../../utils";
 import TabNavigation from "../../components/TabNavigation";
 import BillsGrid from "../../components/BillsGrid";
-import IncomesGrid from "../../components/IncomesGrid";
 import AppSnackbar from "../../components/AppSnackbar";
 import { SnackbarContextProvider } from "../../context";
 import SinkingFundGrid from "../../components/SinkinFundGrid";
@@ -19,35 +18,22 @@ const Dashboard = () => {
   const endDate = searchParams.get("endDate");
 
   const {
-    income,
-    addIncome,
-    addBill,
-    bills,
-    deleteBill,
     isLoading,
-    incomeBreakdown,
-    updateBill,
-    deleteIncome,
-    updateIncome,
+    bills,
     sinkingFunds,
+    addBill,
+    deleteBill,
+    updateBill,
     addSinkingFund,
     deleteSinkingFund,
     updateSinkingFund,
+    incomeBreakdown,
   } = useBudget({ startDate, endDate });
 
   function renderDataGrid(currentTab) {
     switch (currentTab) {
       case "budgeting":
         return <BudgetingContainer />;
-      case "incomeStreams":
-        return (
-          <IncomesGrid
-            incomes={income}
-            handleDeleteIncome={deleteIncome}
-            handleUpdateIncome={updateIncome}
-            handleAddIncome={addIncome}
-          />
-        );
       case "bills":
         return (
           <BillsGrid

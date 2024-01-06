@@ -1,23 +1,96 @@
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const GRAPHQL_URL = "http://localhost:3001/graphql";
 
 const useBudget = ({ startDate, endDate }) => {
-  const [income, setIncome] = useState();
   const [bills, setBills] = useState();
   const [sinkingFunds, setSinkingFunds] = useState();
-  const [incomeBreakdown, setIncomeBreakdown] = useState();
-  const [billsBreakdown, setBillsBreakdown] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
-  const updateSinkingFund = async ({
-    id,
-    name,
-    targetAmount,
-    totalSaved,
-    endDate,
-  }) => {
+  async function fetchHousehold() {
+    const {
+      data: {
+        data: { household },
+      },
+    } = await axios.post(GRAPHQL_URL, {
+      query: `
+        query Household {
+          household {
+            id
+            activeBudget {
+              start
+              end
+              payDays {
+                name
+                date
+                amount
+              }
+              bills {
+                id
+                name
+                amount
+                dueDate
+                paymentType
+                payAccount
+                frequency
+              }
+              sinkingFunds {
+                id
+                name
+                targetAmount
+                totalSaved
+                percentComplete
+                weeklyContribution
+                endDate
+              }
+            }
+            archivedBudgets {
+              start
+              end
+              payDays {
+                name
+                date
+                amount
+              }
+            }
+            bills {
+              id
+              name
+              amount
+              dueDate
+              paymentType
+              payAccount
+              frequency
+            }
+            sinkingFunds {
+              id
+              name
+              targetAmount
+              totalSaved
+              percentComplete
+              weeklyContribution
+              endDate
+            }
+          }
+        }
+      `,
+    });
+
+    const { bills, sinkingFunds } = household;
+    setBills(bills);
+    setSinkingFunds(sinkingFunds);
+    setIsLoading(false);
+  }
+
+  useEffect(() => {
+    fetchHousehold();
+  }, []);
+
+  const updateSinkingFund = async (
+    householdId,
+    { id, name, targetAmount, totalSaved, endDate }
+  ) => {
     setIsLoading(true);
 
     const {
@@ -26,7 +99,7 @@ const useBudget = ({ startDate, endDate }) => {
       },
     } = await axios.post(GRAPHQL_URL, {
       query: `
-      mutation UpdateSinkingFund($input: UpdateSinkingFundInput!) {
+      mutation UpdateSinkingFund($input: UpdateSinkingFundMutation) {
         updateSinkingFund(input: $input) {
           id
           name
@@ -34,22 +107,22 @@ const useBudget = ({ startDate, endDate }) => {
           totalSaved
           percentComplete
           weeklyContribution
-          transactions {
-            date
-            amount
-            description
-          }
           endDate
         }
       }`,
-      variables: { input: { id, name, targetAmount, totalSaved, endDate } },
+      variables: {
+        input: {
+          householdId,
+          sinkingFund: { id, name, targetAmount, totalSaved, endDate },
+        },
+      },
     });
 
     setSinkingFunds(updatedSinkingFunds);
     setIsLoading(false);
   };
 
-  const deleteSinkingFund = async (id) => {
+  const deleteSinkingFund = async (householdId, sinkingFundId) => {
     setIsLoading(true);
 
     const {
@@ -58,30 +131,25 @@ const useBudget = ({ startDate, endDate }) => {
       },
     } = await axios.post(GRAPHQL_URL, {
       query: `
-      mutation DeleteSinkingFund($id: ID!) {
-        deleteSinkingFund(id: $id) {
+      mutation DeleteSinkingFund($householdId: ID!, $sinkingFundId: ID!) {
+        deleteSinkingFund(householdId: $householdId, sinkingFundId: $sinkingFundId) {
           id
           name
           targetAmount
           totalSaved
           percentComplete
           weeklyContribution
-          transactions {
-            date
-            amount
-            description
-          }
           endDate
         }
       }`,
-      variables: { id },
+      variables: { householdId, sinkingFundId },
     });
 
     setSinkingFunds(updatedSinkingFunds);
     setIsLoading(false);
   };
 
-  const addSinkingFund = async (sinkingFund) => {
+  const addSinkingFund = async (householdId, sinkingFund) => {
     setIsLoading(true);
     const {
       data: {
@@ -105,14 +173,14 @@ const useBudget = ({ startDate, endDate }) => {
           endDate
         }
       }`,
-      variables: { input: sinkingFund },
+      variables: { input: { householdId, sinkingFund } },
     });
 
     setSinkingFunds(updatedSinkingFunds);
     setIsLoading(false);
   };
 
-  const addBill = async (bill) => {
+  const addBill = async (householdId, bill) => {
     setIsLoading(true);
     const {
       data: {
@@ -120,7 +188,7 @@ const useBudget = ({ startDate, endDate }) => {
       },
     } = await axios.post(GRAPHQL_URL, {
       query: `
-      mutation AddNewBill($input: BillInput) {
+      mutation AddNewBill($input: AddBillInput) {
         addNewBill(input: $input) {
           id
           name
@@ -131,153 +199,14 @@ const useBudget = ({ startDate, endDate }) => {
           frequency
         }
       }`,
-      variables: { input: bill },
+      variables: { input: { householdId, bill } },
     });
 
     setBills(updatedBills);
     setIsLoading(false);
   };
 
-  const addIncome = async (incomeStream) => {
-    setIsLoading(true);
-
-    const {
-      data: {
-        data: { addNewIncome: updatedIncomeStreams },
-      },
-    } = await axios.post(GRAPHQL_URL, {
-      query: `
-      mutation AddNewIncome($input: IncomeInput) {
-        addNewIncome(input: $input) {
-          id
-          name
-          amount
-          frequency
-          nextPayDay
-        }
-      }`,
-      variables: { input: incomeStream },
-    });
-
-    setIncome(updatedIncomeStreams);
-    setIsLoading(false);
-  };
-
-  const updateIncome = async (incomeStream) => {
-    setIsLoading(true);
-    const {
-      data: {
-        data: { updateIncome: updatedIncomeStreams },
-      },
-    } = await axios.post(GRAPHQL_URL, {
-      query: `
-      mutation UpdateIncome($input: UpdateIncomeInput) {
-        updateIncome(input: $input) {
-          id
-          amount
-          frequency
-          nextPayDay
-          name
-        }
-      }`,
-      variables: { input: incomeStream },
-    });
-
-    setIncome(updatedIncomeStreams);
-    setIsLoading(false);
-  };
-
-  const getIncomeAndBills = useCallback(async () => {
-    setIsLoading(true);
-    const {
-      data: {
-        data: { incomeStreams, bills, sinkingFunds },
-      },
-    } = await axios.post(GRAPHQL_URL, {
-      query: `
-        query GetIncomeAndBills {
-          incomeStreams {
-            id
-            amount
-            frequency
-            nextPayDay
-            name
-          }
-          bills {
-            id
-            name
-            amount
-            dueDate
-            paymentType
-            payAccount
-            frequency
-          }
-          sinkingFunds {
-            id
-            name
-            targetAmount
-            totalSaved
-            percentComplete
-            weeklyContribution
-            transactions {
-              date
-              amount
-              description
-            }
-            endDate
-          }
-        }
-        `,
-    });
-
-    setIncome(incomeStreams);
-    setBills(bills);
-    setSinkingFunds(sinkingFunds);
-    setIsLoading(false);
-  }, []);
-
-  const getBudgetBreakdown = useCallback(async () => {
-    setIsLoading(true);
-    const {
-      data: {
-        data: { incomeBreakdown, billBreakdown },
-      },
-    } = await axios.post(GRAPHQL_URL, {
-      query: `
-        query GetBudgetBreakdown($startDate: String!, $endDate: String!) {
-          incomeBreakdown(startDate: $startDate, endDate: $endDate) {
-            netIncome
-            remainingIncome
-          }
-          billBreakdown(startDate: $startDate, endDate: $endDate) {
-            startDate
-            endDate
-            totalAmount
-            payAccounts {
-              payAccount
-              amount
-            }
-            bills {
-              id
-              name
-              amount
-              dueDate
-              paymentType
-              payAccount
-              frequency
-            }
-          }
-        }
-      `,
-      variables: { startDate, endDate },
-    });
-
-    setIncomeBreakdown(incomeBreakdown);
-    setBillsBreakdown(billBreakdown);
-    setIsLoading(false);
-  }, [startDate, endDate]);
-
-  const deleteBill = async (id) => {
+  const deleteBill = async (householdId, billId) => {
     setIsLoading(true);
     const {
       data: {
@@ -285,8 +214,8 @@ const useBudget = ({ startDate, endDate }) => {
       },
     } = await axios.post(GRAPHQL_URL, {
       query: `
-      mutation DeleteBill($id: ID!) {
-        deleteBill(id: $id) {
+      mutation DeleteBill($householdId: ID!, $billId: ID!) {
+        deleteBill(householdId: $householdId, billId: $billId) {
           id
           name
           amount
@@ -297,14 +226,14 @@ const useBudget = ({ startDate, endDate }) => {
         }
       }
       `,
-      variables: { id },
+      variables: { householdId, billId },
     });
 
     setBills(deleteBill);
     setIsLoading(false);
   };
 
-  const updateBill = async (bill) => {
+  const updateBill = async (householdId, bill) => {
     setIsLoading(true);
     const {
       data: {
@@ -312,74 +241,34 @@ const useBudget = ({ startDate, endDate }) => {
       },
     } = await axios.post(GRAPHQL_URL, {
       query: `
-      mutation UpdateBill($input: UpdateBillInput) {
+      mutation UpdateBill($input: UpdateBillMutation) {
         updateBill(input: $input) {
           id
           name
           amount
           dueDate
-          frequency
-          payAccount
           paymentType
+          payAccount
+          frequency
         }
       }
       `,
-      variables: { input: bill },
+      variables: { input: { householdId, bill } },
     });
 
     setBills(updateBill);
     setIsLoading(false);
   };
 
-  const deleteIncome = async (id) => {
-    setIsLoading(true);
-    const {
-      data: {
-        data: { deleteIncome: updatedIncomeStreams },
-      },
-    } = await axios.post(GRAPHQL_URL, {
-      query: `
-        mutation DeleteIncome($id: ID!) {
-          deleteIncome(id: $id) {
-            id
-            amount
-            frequency
-            nextPayDay
-            name
-          }
-        }
-      `,
-      variables: { id },
-    });
-    setIncome(updatedIncomeStreams);
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    getIncomeAndBills();
-  }, []);
-
-  useEffect(() => {
-    if (startDate && endDate) {
-      getBudgetBreakdown();
-    }
-  }, [startDate, endDate, income, bills]);
-
   return {
-    addBill,
-    addIncome,
-    addSinkingFund,
     bills,
-    billsBreakdown,
-    deleteBill,
-    deleteIncome,
-    deleteSinkingFund,
-    income,
-    incomeBreakdown,
-    isLoading,
     sinkingFunds,
+    isLoading,
+    addBill,
+    addSinkingFund,
+    deleteBill,
+    deleteSinkingFund,
     updateBill,
-    updateIncome,
     updateSinkingFund,
   };
 };

@@ -5,7 +5,7 @@ const { BILLS_SCHEMA } = require("./schema");
 
 const billsModel = model("Bill", BILLS_SCHEMA);
 
-async function fetchBills(billFilter) {
+async function fetchBillsCollection(billFilter) {
   try {
     let filter = {};
     if (billFilter) {
@@ -28,7 +28,7 @@ async function fetchBills(billFilter) {
 async function addBill(bill) {
   try {
     await billsModel.create([{ ...bill, id: uuid() }]);
-    return await fetchBills();
+    return await fetchBillsCollection();
   } catch (error) {
     console.error(`Error adding bill - ${error}`);
     throw Error("Unable to add bill");
@@ -38,7 +38,7 @@ async function addBill(bill) {
 async function deleteBill(id) {
   try {
     await billsModel.deleteOne({ id });
-    return await fetchBills();
+    return await fetchBillsCollection();
   } catch (error) {
     console.error(`Error deleting bill - ${error}`);
     throw Error("Unable to delete bill");
@@ -48,7 +48,7 @@ async function deleteBill(id) {
 async function updateBill(updatedBill) {
   try {
     await billsModel.updateOne({ id: updatedBill.id }, updatedBill);
-    return await fetchBills();
+    return await fetchBillsCollection();
   } catch (error) {
     console.error(`Error updating bill with id ${updateBill.id}`);
     throw Error("Unable to update bill");
@@ -58,6 +58,6 @@ async function updateBill(updatedBill) {
 module.exports = {
   addBill,
   deleteBill,
-  fetchBills,
+  fetchBillsCollection,
   updateBill,
 };

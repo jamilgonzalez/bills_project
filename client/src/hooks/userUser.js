@@ -22,6 +22,7 @@ const useUser = () => {
               email
               accountId
               avatar
+              householdId
             }
           }`,
     });

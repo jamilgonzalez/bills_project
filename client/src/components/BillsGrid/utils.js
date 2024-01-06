@@ -38,6 +38,33 @@ export const paymentTypeEnum = [
   },
 ];
 
+export const frequencyEnum = [
+  {
+    value: "",
+    label: "Select Frequency...",
+  },
+  {
+    value: "weekly",
+    label: "Weekly",
+  },
+  {
+    value: "biWeekly",
+    label: "Bi-Weekly",
+  },
+  {
+    value: "monthly",
+    label: "Monthly",
+  },
+  {
+    value: "quarterly",
+    label: "Quarterly",
+  },
+  {
+    value: "yearly",
+    label: "Yearly",
+  },
+];
+
 export const DEFAULT_FORM = {
   name: "",
   frequency: "",

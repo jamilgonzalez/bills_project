@@ -5,7 +5,7 @@ const { SINKING_FUNDS_SCHEMA } = require("./schema");
 
 const sinkingFundsModel = model("SinkingFund", SINKING_FUNDS_SCHEMA);
 
-async function fetchSinkingFunds() {
+async function fetchSinkingFundsCollection() {
   try {
     return await sinkingFundsModel.find({}, { _id: 0, __v: 0 });
   } catch (error) {
@@ -50,7 +50,7 @@ async function updateSinkingFund(updatedSinkingFund) {
 }
 
 module.exports = {
-  fetchSinkingFunds,
+  fetchSinkingFundsCollection,
   addSinkingFund,
   deleteSinkingFund,
   updateSinkingFund,

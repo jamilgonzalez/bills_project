@@ -9,7 +9,7 @@ import {
   FormHelperText,
 } from "@mui/material";
 
-import { columns, DEFAULT_FORM, paymentTypeEnum } from "./utils";
+import { columns, DEFAULT_FORM, paymentTypeEnum, frequencyEnum } from "./utils";
 
 import BaseGrid from "../BaseGrid";
 
@@ -27,7 +27,8 @@ const BillsGrid = ({
     formState: { errors },
   } = useForm();
 
-  const { name, amount, dueDate, payAccount, paymentType } = getValues();
+  const { name, amount, dueDate, payAccount, paymentType, frequency } =
+    getValues();
 
   const formFields = (
     <>
@@ -91,6 +92,25 @@ const BillsGrid = ({
           <FormHelperText sx={{ marginLeft: "0px" }}>
             Payment Type
           </FormHelperText>
+        </FormControl>
+      </Grid>
+      <Grid item xs={4}>
+        <FormControl fullWidth>
+          <Select
+            {...register("frequency")}
+            variant="standard"
+            fullWidth
+            label="Frequency"
+            defaultValue={frequency}>
+            {frequencyEnum.map((f) => {
+              return (
+                <MenuItem key={f.value} value={f.value}>
+                  {f.label}
+                </MenuItem>
+              );
+            })}
+          </Select>
+          <FormHelperText sx={{ marginLeft: "0px" }}>frequency</FormHelperText>
         </FormControl>
       </Grid>
     </>

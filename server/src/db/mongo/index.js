@@ -7,6 +7,9 @@ const { fetchUser, createUser } = require("./user");
 
 const { addBudget, fetchBudget } = require("./budget");
 
+const { fetchBillsCollection } = require("./bills");
+const { fetchSinkingFundsCollection } = require("./sinkingFunds");
+
 const {
   createHousehold,
   fetchHousehold,
@@ -89,4 +92,6 @@ module.exports = Object.freeze({
   createHousehold,
   fetchHousehold,
   updateHousehold,
+  fetchBillsCollection,
+  fetchSinkingFundsCollection,
 });

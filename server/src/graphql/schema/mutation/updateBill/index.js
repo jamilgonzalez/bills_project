@@ -15,17 +15,7 @@ const updateBill = {
     type: new GraphQLNonNull(new GraphQLList(Bill)),
     args: {
       input: {
-        type: new GraphQLInputObjectType({
-          name: "UpdateBillMutation",
-          fields: {
-            householdId: {
-              type: new GraphQLNonNull(GraphQLID),
-            },
-            bill: {
-              type: new GraphQLNonNull(updateBillInput),
-            },
-          },
-        }),
+        type: new GraphQLNonNull(updateBillInput),
       },
     },
     resolve: updateBillResolver,

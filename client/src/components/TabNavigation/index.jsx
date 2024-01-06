@@ -19,9 +19,7 @@ const availableTabs = [
 
 const TabNavigation = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [currentTab, setCurrentTab] = useState(
-    searchParams.get("tab") || "expenses"
-  );
+  const [currentTab, setCurrentTab] = useState(searchParams.get("tab"));
 
   useEffect(() => {
     setSearchParams((prev) => {

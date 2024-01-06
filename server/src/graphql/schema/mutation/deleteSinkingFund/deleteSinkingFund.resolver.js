@@ -2,9 +2,10 @@ const db = require("../../../../db");
 
 async function deleteSinkingFundResolver(
   _parent,
-  { householdId, sinkingFundId }
+  { id },
+  { user: { householdId } }
 ) {
-  await db.deleteSinkingFund(householdId, sinkingFundId);
+  await db.deleteSinkingFund(householdId, id);
   const { sinkingFunds } = await db.fetchHousehold(householdId);
   return sinkingFunds;
 }

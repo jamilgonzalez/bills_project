@@ -8,7 +8,11 @@ const addNewBillResolver = require("./addNewBill.resolver");
 const addNewBill = {
   addNewBill: {
     type: new GraphQLNonNull(new GraphQLList(Bill)),
-    args: AddNewBillInput,
+    args: {
+      input: {
+        type: new GraphQLNonNull(AddNewBillInput),
+      },
+    },
     resolve: addNewBillResolver,
   },
 };

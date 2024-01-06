@@ -1,7 +1,11 @@
 const db = require("../../../../db");
 
-async function updateBillResolver(_parent, { input: { householdId, bill } }) {
-  await db.updateBill(householdId, bill);
+async function updateBillResolver(
+  _parent,
+  { input },
+  { user: { householdId } }
+) {
+  await db.updateBill(householdId, input);
   const { bills } = await db.fetchHousehold(householdId);
   return bills;
 }

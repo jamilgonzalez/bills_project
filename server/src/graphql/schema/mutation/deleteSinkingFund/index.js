@@ -7,10 +7,7 @@ const deleteSinkingFund = {
   deleteSinkingFund: {
     type: new GraphQLNonNull(new GraphQLList(SinkingFund)),
     args: {
-      householdId: {
-        type: new GraphQLNonNull(GraphQLID),
-      },
-      sinkingFundId: {
+      id: {
         type: new GraphQLNonNull(GraphQLID),
       },
     },

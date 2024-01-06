@@ -8,7 +8,11 @@ const addNewSinkingFundResolver = require("./addNewSinkingFund.resolver");
 const addNewSinkingFund = {
   addNewSinkingFund: {
     type: new GraphQLNonNull(new GraphQLList(SinkingFund)),
-    args: addNewSinkingFundInput,
+    args: {
+      input: {
+        type: new GraphQLNonNull(addNewSinkingFundInput),
+      },
+    },
     resolve: addNewSinkingFundResolver,
   },
 };

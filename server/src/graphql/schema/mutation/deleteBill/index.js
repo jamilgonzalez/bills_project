@@ -8,10 +8,7 @@ const deleteBill = {
   deleteBill: {
     type: new GraphQLNonNull(new GraphQLList(Bill)),
     args: {
-      householdId: {
-        type: new GraphQLNonNull(GraphQLID),
-      },
-      billId: {
+      id: {
         type: new GraphQLNonNull(GraphQLID),
       },
     },

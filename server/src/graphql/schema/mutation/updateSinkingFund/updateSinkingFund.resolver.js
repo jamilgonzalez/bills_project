@@ -2,9 +2,10 @@ const db = require("../../../../db");
 
 async function updateSinkingFundResolver(
   _partner,
-  { input: { householdId, sinkingFund } }
+  { input },
+  { user: { householdId } }
 ) {
-  await db.updateSinkingFund(householdId, sinkingFund);
+  await db.updateSinkingFund(householdId, input);
   const { sinkingFunds } = await db.fetchHousehold(householdId);
   return sinkingFunds;
 }

@@ -2,7 +2,6 @@ import { DataGrid, useGridApiRef } from "@mui/x-data-grid";
 import { useContext, useState } from "react";
 import { Grid, Button, Typography } from "@mui/material";
 import PlaylistAddTwoToneIcon from "@mui/icons-material/PlaylistAddTwoTone";
-import { useSearchParams } from "react-router-dom";
 
 import DeleteButton from "../DeleteButton";
 import EditModal from "../EditModal";
@@ -24,9 +23,6 @@ const BaseGrid = ({
   const [selectedRows, setSelectedRows] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const updateSnackbarState = useContext(UpdateSnackbarContext);
-  const [searchParms] = useSearchParams();
-
-  const householdId = searchParms.get("householdId");
 
   return (
     rows && (
@@ -52,9 +48,7 @@ const BaseGrid = ({
             selectedRows={selectedRows}
             handleOnClick={async () => {
               try {
-                await Promise.all(
-                  selectedRows.map((row) => deleteRow(householdId, row.id))
-                );
+                await Promise.all(selectedRows.map((row) => deleteRow(row.id)));
                 setSelectedRows([]);
                 updateSnackbarState({
                   severity: "success",
@@ -126,10 +120,10 @@ const BaseGrid = ({
                   let message;
                   try {
                     if (isAddingNewRow) {
-                      await addRow(householdId, data);
+                      await addRow(data);
                       message = `${data.name} has been added successfully!`;
                     } else {
-                      await updateRow(householdId, data);
+                      await updateRow(data);
                       message = `${data.name} has been updated successfully!`;
                     }
                     updateSnackbarState({

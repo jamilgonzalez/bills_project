@@ -25,25 +25,32 @@ function parseGoogleUser(user) {
 // used only when user signs in using social auth
 passport.serializeUser(async (user, done) => {
   const billsUser = parseGoogleUser(user);
-  const exists = await db.fetchUser(billsUser.accountId);
+  const userAccount = await db.fetchUser(billsUser.accountId);
 
-  if (!exists) {
+  if (!userAccount) {
     try {
       const { id } = await db.createHousehold();
-      await db.createUser({ ...billsUser, householdId: id });
+      await db.createUser({ ...billsUser, householdId });
+      done(null, {
+        accountId: billsUser.accountId,
+        email: billsUser.email,
+        householdId: id,
+      });
     } catch (error) {
       console.log(`Error creating user from social sign in- ${error}`);
       done(error);
     }
   }
 
-  done(null, { accountId: billsUser.accountId, email: billsUser.email });
+  done(null, {
+    accountId: billsUser.accountId,
+    email: billsUser.email,
+    householdId: userAccount.householdId,
+  });
 });
 
 // used on ever request post sign in
-passport.deserializeUser(async (obj, done) => {
-  done(null, obj);
-});
+passport.deserializeUser(async (obj, done) => done(null, obj));
 
 // register strategy & initialize passport to apply strategies
 app.use(passport.use(googleStrategy).initialize());

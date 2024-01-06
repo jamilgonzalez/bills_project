@@ -1,4 +1,9 @@
-const { GraphQLList, GraphQLNonNull } = require("graphql");
+const {
+  GraphQLList,
+  GraphQLNonNull,
+  GraphQLInputObjectType,
+  GraphQLID,
+} = require("graphql");
 
 const SinkingFund = require("../../SinkingFund");
 
@@ -10,7 +15,17 @@ const updateSinkingFund = {
     type: new GraphQLNonNull(new GraphQLList(SinkingFund)),
     args: {
       input: {
-        type: new GraphQLNonNull(updateSinkingFundInput),
+        type: new GraphQLInputObjectType({
+          name: "UpdateSinkingFundMutation",
+          fields: {
+            householdId: {
+              type: new GraphQLNonNull(GraphQLID),
+            },
+            sinkingFund: {
+              type: new GraphQLNonNull(updateSinkingFundInput),
+            },
+          },
+        }),
       },
     },
     resolve: updateSinkingFundResolver,

@@ -3,14 +3,6 @@ const { uuid } = require("uuidv4");
 
 const { INCOMES_SCHEMA } = require("./schema");
 
-const { addBill, deleteBill, fetchBills, updateBill } = require("./bills");
-const {
-  fetchSinkingFunds,
-  addSinkingFund,
-  deleteSinkingFund,
-  updateSinkingFund,
-} = require("./sinkingFunds");
-
 const { fetchUser, createUser } = require("./user");
 
 const { addBudget, fetchBudget } = require("./budget");
@@ -19,6 +11,12 @@ const {
   createHousehold,
   fetchHousehold,
   updateHousehold,
+  addBill,
+  addSinkingFund,
+  updateBill,
+  updateSinkingFund,
+  deleteBill,
+  deleteSinkingFund,
 } = require("./household");
 
 const incomeModel = model("Income", INCOMES_SCHEMA);
@@ -79,9 +77,7 @@ module.exports = Object.freeze({
   fetchIncomeStreams,
   addBill,
   deleteBill,
-  fetchBills,
   updateBill,
-  fetchSinkingFunds,
   addSinkingFund,
   deleteSinkingFund,
   updateSinkingFund,

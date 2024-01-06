@@ -3,6 +3,7 @@ const {
   GraphQLNonNull,
   GraphQLString,
   GraphQLFloat,
+  GraphQLID,
 } = require("graphql");
 
 const addNewSinkingFundInput = {
@@ -10,17 +11,27 @@ const addNewSinkingFundInput = {
     type: new GraphQLInputObjectType({
       name: "AddNewSinkingFundInput",
       fields: {
-        name: {
-          type: new GraphQLNonNull(GraphQLString),
+        householdId: {
+          type: new GraphQLNonNull(GraphQLID),
         },
-        targetAmount: {
-          type: new GraphQLNonNull(GraphQLFloat),
-        },
-        totalSaved: {
-          type: GraphQLFloat,
-        },
-        endDate: {
-          type: GraphQLString,
+        sinkingFund: {
+          type: new GraphQLInputObjectType({
+            name: "SinkingFundInput",
+            fields: {
+              name: {
+                type: new GraphQLNonNull(GraphQLString),
+              },
+              targetAmount: {
+                type: new GraphQLNonNull(GraphQLFloat),
+              },
+              totalSaved: {
+                type: GraphQLFloat,
+              },
+              endDate: {
+                type: GraphQLString,
+              },
+            },
+          }),
         },
       },
     }),

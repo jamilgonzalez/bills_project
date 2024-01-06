@@ -14,7 +14,10 @@ const BILL = {
 };
 
 const SINKING_FUND = {
-  id: String,
+  id: {
+    type: String,
+    default: v4(),
+  },
   name: String,
   targetAmount: Number,
   totalSaved: Number,
@@ -22,12 +25,20 @@ const SINKING_FUND = {
 };
 
 const PAY_DAY = {
+  id: {
+    type: String,
+    default: v4(),
+  },
   name: String,
   date: String,
   amount: Number,
 };
 
 const BUDGET = {
+  id: {
+    type: String,
+    default: v4(),
+  },
   start: String,
   end: String,
   paydays: [PAY_DAY],

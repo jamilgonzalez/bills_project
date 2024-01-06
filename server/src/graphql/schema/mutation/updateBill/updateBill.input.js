@@ -9,46 +9,6 @@ const {
 const PaymentType = require("../../PaymentType");
 const Frequency = require("../../Frequency");
 
-const TransactionInput = new GraphQLInputObjectType({
-  name: "TransactionInput",
-  fields: {
-    date: {
-      type: new GraphQLNonNull(GraphQLString),
-    },
-    amount: {
-      type: new GraphQLNonNull(GraphQLFloat),
-    },
-    description: {
-      type: GraphQLString,
-    },
-  },
-});
-
-const SinkingFundInput = new GraphQLInputObjectType({
-  name: "SinkingFundInput",
-  fields: {
-    id: {
-      type: new GraphQLNonNull(GraphQLID),
-    },
-    name: {
-      type: new GraphQLNonNull(GraphQLString),
-    },
-    dueDate: {
-      type: new GraphQLNonNull(GraphQLString),
-    },
-    targetAmount: {
-      type: new GraphQLNonNull(GraphQLFloat),
-      description: "Amount being saved.",
-    },
-    totalSaved: {
-      type: new GraphQLNonNull(GraphQLFloat),
-    },
-    transactions: {
-      type: new GraphQLNonNull(TransactionInput),
-    },
-  },
-});
-
 const updateBillInput = new GraphQLInputObjectType({
   name: "UpdateBillInput",
   fields: {
@@ -56,27 +16,24 @@ const updateBillInput = new GraphQLInputObjectType({
       type: new GraphQLNonNull(GraphQLID),
     },
     name: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
     amount: {
-      type: GraphQLFloat,
+      type: new GraphQLNonNull(GraphQLFloat),
     },
     dueDate: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
     paymentType: {
-      type: PaymentType,
+      type: new GraphQLNonNull(PaymentType),
     },
     payAccount: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
       description:
         "Account the money will be drawn out of (ex. Bills checking account).",
     },
     frequency: {
-      type: Frequency,
-    },
-    sinkingFund: {
-      type: SinkingFundInput,
+      type: new GraphQLNonNull(Frequency),
     },
   },
 });

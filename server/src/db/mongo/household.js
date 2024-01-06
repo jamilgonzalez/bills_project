@@ -38,8 +38,87 @@ async function updateHousehold(id, { field, value }) {
   }
 }
 
+async function addBill(id, bill) {
+  try {
+    return await householdModel.updateOne({ id }, { $push: { bills: bill } });
+  } catch (error) {
+    console.error(`Error adding bill to db- ${error}`);
+    throw Error("Error adding bill to db");
+  }
+}
+
+async function updateBill(id, bill) {
+  try {
+    return await householdModel.updateOne(
+      { id, "bills.id": bill.id },
+      { $set: { "bills.$": bill } }
+    );
+  } catch (error) {
+    console.error(`Error updating bill to db- ${error}`);
+    throw Error("Error updating bill to db");
+  }
+}
+
+async function addSinkingFund(id, sinkingFund) {
+  try {
+    return await householdModel.updateOne(
+      { id },
+      { $push: { sinkingFunds: sinkingFund } }
+    );
+  } catch (error) {
+    console.error(`Error adding sinkingfund in db - ${error}`);
+    throw Error("Error adding sinkingfund in db");
+  }
+}
+
+async function updateSinkingFund(id, sinkingFund) {
+  try {
+    return await householdModel.updateOne(
+      { id, "sinkingFunds.id": sinkingFund.id },
+      { $set: { "sinkingFunds.$": sinkingFund } }
+    );
+  } catch (error) {
+    console.error(`Error updating sinking fund in db- ${error}`);
+    throw Error("Error updating sinkingfund in db");
+  }
+}
+
+async function deleteSinkingFund(householdId, sinkingFundId) {
+  try {
+    await householdModel.updateOne(
+      {
+        id: householdId,
+      },
+      { $pull: { sinkingFunds: { id: sinkingFundId } } }
+    );
+  } catch (error) {
+    console.error(`Error deleting sinkingfund from db - ${error}`);
+    throw Error("Error deleting sinkingfund from db");
+  }
+}
+
+async function deleteBill(householdId, billId) {
+  try {
+    await householdModel.updateOne(
+      {
+        id: householdId,
+      },
+      { $pull: { bills: { id: billId } } }
+    );
+  } catch (error) {
+    console.error(`Error deleting bill from db - ${error}`);
+    throw Error("Error deleting bill from db");
+  }
+}
+
 module.exports = {
   createHousehold,
   fetchHousehold,
   updateHousehold,
+  addBill,
+  addSinkingFund,
+  updateBill,
+  updateSinkingFund,
+  deleteSinkingFund,
+  deleteBill,
 };

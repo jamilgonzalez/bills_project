@@ -36,10 +36,6 @@ const Bill = new GraphQLObjectType({
     frequency: {
       type: new GraphQLNonNull(Frequency),
     },
-    sinkingFund: {
-      type: SinkingFund,
-      // resolve: can probably fetch sf using the sinking fund id stored here?
-    },
   },
 });
 

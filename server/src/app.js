@@ -8,38 +8,24 @@ const { parsed: config } = require("dotenv").config();
 
 const db = require("./db");
 const authRouter = require("./routes/auth");
-const { checkLoggedIn } = require("./auth/utils");
+const { checkLoggedIn, parseUser } = require("./auth/utils");
 const googleStrategy = require("./auth/strategy/google");
 
 const app = express();
 
-function parseGoogleUser(user) {
-  const { email, sub: accountId, picture: avatar } = user._json;
-  return {
-    accountId,
-    email,
-    avatar,
-  };
-}
-
 // used only when user signs in using social auth
 passport.serializeUser(async (user, done) => {
-  const billsUser = parseGoogleUser(user);
+  const billsUser = parseUser(user);
   const userAccount = await db.fetchUser(billsUser.accountId);
 
   if (!userAccount) {
-    try {
-      const { id } = await db.createHousehold();
-      await db.createUser({ ...billsUser, householdId });
-      done(null, {
-        accountId: billsUser.accountId,
-        email: billsUser.email,
-        householdId: id,
-      });
-    } catch (error) {
-      console.log(`Error creating user from social sign in- ${error}`);
-      done(error);
-    }
+    const { id } = await db.createHousehold();
+    await db.createUser({ ...billsUser, householdId });
+    done(null, {
+      accountId: billsUser.accountId,
+      email: billsUser.email,
+      householdId: id,
+    });
   }
 
   done(null, {

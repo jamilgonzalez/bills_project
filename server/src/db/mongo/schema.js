@@ -25,7 +25,7 @@ const USER_SCHEMA = new Schema({
     type: String,
     default: v4(),
   },
-  fullName: String,
+  name: String,
   email: String,
   avatar: String,
   householdId: String,

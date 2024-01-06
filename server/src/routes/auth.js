@@ -7,7 +7,7 @@ const authRouter = express.Router();
 authRouter.get(
   "/google",
   passport.authenticate("google", {
-    scope: ["email"],
+    scope: ["email", "profile"],
   })
 );
 
@@ -16,7 +16,7 @@ authRouter.get(
   "/google/callback",
   passport.authenticate("google", {
     failureRedirect: "/login#failed",
-    successRedirect: "/dashboard",
+    successRedirect: "/dashboard?tab=budgeting",
     session: true,
   })
 );

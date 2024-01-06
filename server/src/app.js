@@ -8,31 +8,31 @@ const { parsed: config } = require("dotenv").config();
 
 const db = require("./db");
 const authRouter = require("./routes/auth");
-const { checkLoggedIn, parseUser } = require("./auth/utils");
 const googleStrategy = require("./auth/strategy/google");
+const { checkLoggedIn, parseUser } = require("./auth/utils");
 
 const app = express();
 
 // used only when user signs in using social auth
-passport.serializeUser(async (user, done) => {
-  const billsUser = parseUser(user);
-  const userAccount = await db.fetchUser(billsUser.accountId);
+passport.serializeUser(async (userObject, done) => {
+  const authenticatedUser = parseUser(userObject);
+  const user = await db.fetchUser(authenticatedUser.accountId);
 
-  if (!userAccount) {
+  if (!user) {
     const { id } = await db.createHousehold();
-    await db.createUser({ ...billsUser, householdId });
+    await db.createUser({ ...authenticatedUser, householdId: id });
     done(null, {
-      accountId: billsUser.accountId,
-      email: billsUser.email,
+      accountId: authenticatedUser.accountId,
+      email: authenticatedUser.email,
       householdId: id,
     });
+  } else {
+    done(null, {
+      accountId: user.accountId,
+      email: user.email,
+      householdId: user.householdId,
+    });
   }
-
-  done(null, {
-    accountId: billsUser.accountId,
-    email: billsUser.email,
-    householdId: userAccount.householdId,
-  });
 });
 
 // used on ever request post sign in
@@ -41,7 +41,6 @@ passport.deserializeUser(async (obj, done) => done(null, obj));
 // register strategy & initialize passport to apply strategies
 app.use(passport.use(googleStrategy).initialize());
 
-// passport needs this middleware to maintain session
 app.use(
   cookieSession({
     name: "session",
@@ -61,7 +60,6 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "public")));
 
 // routes
-
 app.use("/auth", authRouter);
 
 // client

@@ -7,27 +7,15 @@ const app = require("./app");
 const schema = require("./graphql/schema");
 const { ApolloLandingPage } = require("./util");
 
-const { PORT = 4000, MONGO_URL, ENV } = process.env;
-
-// function authorizationMiddleware(req, res, next) {
-//   if (req.user.id !== req.user.id) {
-//     return res.status(403).json({
-//       errors: [{ message: "You are not authorized to see this data" }],
-//     });
-//   }
-
-//   next();
-// }
+const { PORT = 4000, MONGO_URL } = process.env;
 
 async function connectToMongodb() {
-  if (ENV !== "local") {
-    try {
-      await mongoose.connect(MONGO_URL);
-      console.log("🚀 Connected to mongodb");
-    } catch (err) {
-      console.error(`Error connecting to mongodb - ${err}`);
-      throw Error("Error connecting to db");
-    }
+  try {
+    await mongoose.connect(MONGO_URL);
+    console.log("🚀 Connected to mongodb");
+  } catch (err) {
+    console.error(`Error connecting to mongodb - ${err}`);
+    throw Error("Error connecting to db");
   }
 }
 
@@ -39,7 +27,6 @@ async function startApolloServer() {
   // GRAPHQL
   await server.start();
   app.use(
-    // authorizationMiddleware,
     expressMiddleware(server, {
       context: ({ req }) => ({
         user: req?.user,

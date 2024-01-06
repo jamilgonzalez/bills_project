@@ -23,6 +23,7 @@ const useUser = () => {
               accountId
               avatar
               householdId
+              name
             }
           }`,
     });

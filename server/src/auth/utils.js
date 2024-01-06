@@ -13,11 +13,12 @@ function parseUser(user) {
 
   switch (provider) {
     case "google":
-      const { email, sub: accountId, picture: avatar } = user._json;
+      const { email, sub: accountId, picture: avatar, name } = user._json;
       return {
         accountId,
         email,
         avatar,
+        name,
       };
   }
 }

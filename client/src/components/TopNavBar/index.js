@@ -21,7 +21,6 @@ import WithCaption from "../WithCaption";
 
 const TopNavBar = ({ user, isLoading }) => {
   let navigate = useNavigate();
-
   const [anchorEl, setAnchorEl] = useState(null);
 
   const open = Boolean(anchorEl);
@@ -30,24 +29,13 @@ const TopNavBar = ({ user, isLoading }) => {
     setAnchorEl(null);
   };
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
   return (
     <AppBar position="fixed" elevation={0} sx={{ backgroundColor: "white" }}>
       <Toolbar variant="dense">
         <Grid container justifyContent={"end"}>
-          <Grid
-            item
-            xs={1}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              textAlign: "center",
-            }}>
+          <Grid item xs={1}>
             <IconButton
-              onClick={handleClick}
+              onClick={(event) => setAnchorEl(event.currentTarget)}
               size="large"
               sx={{ ml: 2 }}
               aria-controls={open ? "account-menu" : undefined}
@@ -77,14 +65,14 @@ const TopNavBar = ({ user, isLoading }) => {
               <Grid container justifyContent={"center"} item xs={6}>
                 <Avatar src={user?.avatar} sx={{ width: 32, height: 32 }} />
               </Grid>
+              <Grid item xs={6} sx={{ textAlign: "center" }}>
+                <WithCaption caption={"Name"} justifyCaption="center">
+                  <Typography variant="body2">{user?.name}</Typography>
+                </WithCaption>
+              </Grid>
               <Grid sx={{ textAlign: "center" }} item xs={12}>
                 <WithCaption caption={"Email"} justifyCaption="center">
                   <Typography variant="body2">{user?.email}</Typography>
-                </WithCaption>
-              </Grid>
-              <Grid item xs={12} sx={{ textAlign: "center" }}>
-                <WithCaption caption={"Account ID"} justifyCaption="center">
-                  <Typography variant="body2">{user?.accountId}</Typography>
                 </WithCaption>
               </Grid>
             </Grid>

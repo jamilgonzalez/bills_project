@@ -16,7 +16,7 @@ authRouter.get(
   "/google/callback",
   passport.authenticate("google", {
     failureRedirect: "/login#failed",
-    successRedirect: "/dashboard?tab=budgeting",
+    successRedirect: "http://localhost:3000/dashboard?tab=budgeting",
     session: true,
   })
 );
@@ -28,7 +28,7 @@ authRouter.post("/logout", (req, res, next) => {
       return next(err);
     }
   });
-  return res.redirect("/");
+  return res.redirect("/login");
 });
 
 module.exports = authRouter;

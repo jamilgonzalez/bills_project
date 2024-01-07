@@ -29,6 +29,7 @@ const USER_SCHEMA = new Schema({
   email: String,
   avatar: String,
   householdId: String,
+  role: String,
 });
 
 const HOUSEHOLD_SCHEMA = new Schema({
@@ -51,6 +52,11 @@ const HOUSEHOLD_SCHEMA = new Schema({
   },
 });
 
+const INVITE_SCHEMA = new Schema({
+  email: String,
+  houseHoldId: String,
+});
+
 module.exports = {
   INCOMES_SCHEMA,
   BILLS_SCHEMA,
@@ -58,4 +64,5 @@ module.exports = {
   BUDGET_SCHEMA,
   USER_SCHEMA,
   HOUSEHOLD_SCHEMA,
+  INVITE_SCHEMA,
 };

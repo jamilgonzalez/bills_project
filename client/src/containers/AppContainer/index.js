@@ -1,14 +1,16 @@
+import React from "react";
+
 import TopNavBar from "../../components/TopNavBar";
-import userUser from "../../hooks/userUser";
+import useUser from "../../hooks/useUser";
 
 const AppContainer = ({ children }) => {
-  const { user, isLoading } = userUser();
+  const { user, isLoading } = useUser();
 
   return (
-    <>
+    <React.Fragment>
       <TopNavBar user={user} isLoading={isLoading} />
       {children}
-    </>
+    </React.Fragment>
   );
 };
 

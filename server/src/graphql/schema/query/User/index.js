@@ -3,9 +3,22 @@ const {
   GraphQLObjectType,
   GraphQLString,
   GraphQLID,
+  GraphQLEnumType,
 } = require("graphql");
 
 const userResolver = require("./user.resolver");
+
+const Role = new GraphQLEnumType({
+  name: "role",
+  values: {
+    admin: {
+      value: "admin",
+    },
+    contributor: {
+      valvue: "contributor",
+    },
+  },
+});
 
 const User = new GraphQLObjectType({
   name: "User",
@@ -24,6 +37,9 @@ const User = new GraphQLObjectType({
     },
     householdId: {
       type: new GraphQLNonNull(GraphQLID),
+    },
+    role: {
+      type: new GraphQLNonNull(Role),
     },
   },
 });

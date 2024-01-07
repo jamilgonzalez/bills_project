@@ -1,4 +1,4 @@
-const { Modal, Typography, Card, Grid } = require("@mui/material");
+const { Modal, Card } = require("@mui/material");
 
 const EditModal = ({ isOpen, handleClose, children }) => {
   return isOpen ? (
@@ -11,8 +11,7 @@ const EditModal = ({ isOpen, handleClose, children }) => {
           height: "500px",
           width: "700px",
           transform: "translate(-50%, -50%)",
-        }}
-      >
+        }}>
         {children}
       </Card>
     </Modal>

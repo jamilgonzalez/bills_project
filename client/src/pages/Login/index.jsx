@@ -6,7 +6,7 @@ import xIcon from "../../images/x_logo_2.png";
 const Login = () => {
   const socialSigninButtons = [
     {
-      href: "/auth/google",
+      href: "http://localhost:3001/auth/google?inviteId=jqliu34234hihafi34s",
       startIcon: <Avatar src={googleIcon} />,
       sx: {
         textTransform: "none",

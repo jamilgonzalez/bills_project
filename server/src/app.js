@@ -4,12 +4,14 @@ const morgan = require("morgan");
 const express = require("express");
 const passport = require("passport");
 const cookieSession = require("cookie-session");
-const { parsed: config } = require("dotenv").config();
+require("dotenv").config();
 
 const db = require("./db");
 const authRouter = require("./routes/auth");
 const googleStrategy = require("./auth/strategy/google");
 const { checkLoggedIn, parseUser } = require("./auth/utils");
+
+const { SECRET } = process.env;
 
 const app = express();
 
@@ -45,13 +47,18 @@ app.use(
   cookieSession({
     name: "session",
     maxAge: 60 * 60 * 100 * 24,
-    keys: [config.SECRET],
+    keys: [SECRET],
   })
 );
 
 app.use(passport.session());
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 app.use(morgan("combined"));
 

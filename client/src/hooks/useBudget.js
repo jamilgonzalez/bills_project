@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 const GRAPHQL_URL = "http://localhost:3001/graphql";
 
-const useBudget = ({ startDate, endDate }) => {
+const useBudget = () => {
   const [bills, setBills] = useState();
   const [sinkingFunds, setSinkingFunds] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -13,8 +13,10 @@ const useBudget = ({ startDate, endDate }) => {
       data: {
         data: { household },
       },
-    } = await axios.post(GRAPHQL_URL, {
-      query: `
+    } = await axios.post(
+      GRAPHQL_URL,
+      {
+        query: `
         query Household {
           household {
             id
@@ -75,7 +77,11 @@ const useBudget = ({ startDate, endDate }) => {
           }
         }
       `,
-    });
+      },
+      {
+        withCredentials: true,
+      }
+    );
 
     const { bills, sinkingFunds } = household;
     setBills(bills);

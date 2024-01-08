@@ -3,21 +3,20 @@ import {
   Typography,
   IconButton,
   Avatar,
-  Menu,
   MenuItem,
   ListItemIcon,
   AppBar,
   Toolbar,
   Divider,
   Skeleton,
+  Badge,
+  Drawer,
 } from "@mui/material";
+import MailIcon from "@mui/icons-material/Mail";
 import PersonAdd from "@mui/icons-material/PersonAdd";
-import Logout from "@mui/icons-material/Logout";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
-import WithCaption from "../WithCaption";
 
 const TopNavBar = ({ user, isLoading }) => {
   let navigate = useNavigate();
@@ -44,60 +43,70 @@ const TopNavBar = ({ user, isLoading }) => {
               {isLoading ? (
                 <Skeleton variant="circular" width={32} height={32} />
               ) : (
-                <Avatar src={user?.avatar} sx={{ width: 32, height: 32 }} />
+                <Badge variant="dot" badgeContent={1} color="error">
+                  <Avatar src={user?.avatar} sx={{ width: 32, height: 32 }} />
+                </Badge>
               )}
             </IconButton>
           </Grid>
 
-          <Menu
-            anchorEl={anchorEl}
-            id="account-menu"
+          <Drawer
+            anchor={"right"}
             open={open}
             onClose={handleClose}
-            onClick={handleClose}
-            transformOrigin={{ horizontal: "right", vertical: "top" }}
-            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
-            <Grid
-              container
-              sx={{ height: "auto", padding: "10px" }}
-              direction={"column"}
-              spacing={1}>
-              <Grid container justifyContent={"center"} item xs={6}>
-                <Avatar src={user?.avatar} sx={{ width: 32, height: 32 }} />
+            onClick={handleClose}>
+            <Grid container direction={"row"} sx={{ padding: "7px" }}>
+              <Grid
+                container
+                alignContent={"center"}
+                justifyContent={"center"}
+                item
+                xs={3}>
+                <Avatar src={user?.avatar} />
               </Grid>
-              <Grid item xs={6} sx={{ textAlign: "center" }}>
-                <WithCaption caption={"Name"} justifyCaption="center">
-                  <Typography variant="body2">{user?.name}</Typography>
-                </WithCaption>
-              </Grid>
-              <Grid sx={{ textAlign: "center" }} item xs={12}>
-                <WithCaption caption={"Email"} justifyCaption="center">
-                  <Typography variant="body2">{user?.email}</Typography>
-                </WithCaption>
+              <Grid container item xs={9} justifyContent={"start"}>
+                <Grid item xs={12}>
+                  <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                    {user?.name}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} color={"gray"}>
+                  <Typography variant="caption">{user?.email}</Typography>
+                </Grid>
               </Grid>
             </Grid>
 
             <Divider />
 
+            {/* menu items */}
+            <MenuItem onClick={handleClose}>
+              <ListItemIcon>
+                <Badge badgeContent={1} color="error">
+                  <MailIcon fontSize="small" />
+                </Badge>
+              </ListItemIcon>
+              Invites
+            </MenuItem>
             <MenuItem onClick={handleClose}>
               <ListItemIcon>
                 <PersonAdd fontSize="small" />
               </ListItemIcon>
               Add another account
             </MenuItem>
+
+            <Divider />
+
             <MenuItem
               onClick={async () => {
                 await axios.post("http://localhost:3001/auth/logout");
                 navigate("/login");
               }}>
-              <ListItemIcon>
-                <Logout fontSize="small" />
-              </ListItemIcon>
-              Logout
+              Sign out
             </MenuItem>
-          </Menu>
+          </Drawer>
         </Grid>
       </Toolbar>
+
       <Divider orientation="horizontal" />
     </AppBar>
   );

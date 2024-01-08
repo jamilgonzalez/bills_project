@@ -45,7 +45,7 @@ const Login = () => {
         xs={12}
         sx={{ paddingBottom: "10px" }}>
         <Typography variant="h2">
-          Login to <b>Bills Project</b>
+          Login to <b>b2z</b>
         </Typography>
       </Grid>
       <Grid container items xs={4} direction={"column"} spacing={1}>

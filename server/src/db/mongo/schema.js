@@ -1,6 +1,6 @@
 const { Schema } = require("mongoose");
 
-const { BILL, SINKING_FUND, BUDGET } = require("./constants");
+const { BILL, SINKING_FUND, BUDGET, MEMBER } = require("./constants");
 const { v4 } = require("uuid");
 
 const INCOMES_SCHEMA = new Schema({
@@ -49,6 +49,9 @@ const HOUSEHOLD_SCHEMA = new Schema({
   sinkingFunds: {
     type: [SINKING_FUND],
     default: [],
+  },
+  members: {
+    type: [MEMBER],
   },
 });
 

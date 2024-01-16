@@ -14,7 +14,7 @@ const {
 
 const { createInvite, fetchInvite } = require("./invite");
 
-const { createUser, fetchUser } = require("./user");
+const { createUser, fetchUserByAccountId } = require("./user");
 
 module.exports = Object.freeze({
   createHousehold,
@@ -31,5 +31,5 @@ module.exports = Object.freeze({
   addBudget,
   fetchBudget,
   createUser,
-  fetchUser,
+  fetchUserByAccountId,
 });

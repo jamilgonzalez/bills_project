@@ -5,10 +5,13 @@ const {
   GraphQLList,
   GraphQLString,
   GraphQLFloat,
+  GraphQLEnumType,
 } = require("graphql");
 const householdResolver = require("./household.resolver");
 const SinkingFund = require("../../SinkingFund");
 const Bill = require("../../Bill");
+const User = require("../../User");
+const db = require("../../../../db");
 
 const PayDay = new GraphQLObjectType({
   name: "PayDay",
@@ -50,6 +53,39 @@ const Budget = new GraphQLObjectType({
   },
 });
 
+const Role = new GraphQLEnumType({
+  name: "Role",
+  values: {
+    admin: {
+      value: "admin",
+    },
+    contributor: {
+      value: "contributor",
+    },
+  },
+});
+
+const Member = new GraphQLObjectType({
+  name: "Member",
+  fields: {
+    accountId: {
+      type: new GraphQLNonNull(GraphQLString),
+    },
+    email: {
+      type: new GraphQLNonNull(GraphQLString),
+    },
+    name: {
+      type: new GraphQLNonNull(GraphQLString),
+    },
+    avatar: {
+      type: new GraphQLNonNull(GraphQLString),
+    },
+    role: {
+      type: new GraphQLNonNull(Role),
+    },
+  },
+});
+
 const Household = new GraphQLObjectType({
   name: "Household",
   fields: {
@@ -67,6 +103,14 @@ const Household = new GraphQLObjectType({
     },
     sinkingFunds: {
       type: new GraphQLNonNull(new GraphQLList(SinkingFund)),
+    },
+    members: {
+      type: new GraphQLNonNull(new GraphQLList(Member)),
+      resolve: async ({ members }) => {
+        return await Promise.all(
+          members.map((member) => db.fetchUserByAccountId(member.accountId))
+        );
+      },
     },
   },
 });

@@ -46,9 +46,15 @@ const BUDGET = {
   sinkingFunds: [SINKING_FUND],
 };
 
+const MEMBER = {
+  accountId: String,
+  role: String,
+};
+
 module.exports = {
   BILL,
   SINKING_FUND,
   PAY_DAY,
   BUDGET,
+  MEMBER,
 };

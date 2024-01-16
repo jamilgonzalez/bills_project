@@ -14,10 +14,13 @@ async function fetchHousehold(id) {
   }
 }
 
-async function createHousehold() {
+async function createHousehold(accountId) {
   try {
     const id = v4();
-    await householdModel.create({ id });
+    await householdModel.create({
+      id,
+      members: [{ accountId, role: "admin" }],
+    });
     return await fetchHousehold(id);
   } catch (error) {
     console.error(`Error creating household - ${error}`);

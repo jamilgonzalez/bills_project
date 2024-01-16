@@ -18,15 +18,17 @@ const app = express();
 // used only when user signs in using social auth
 passport.serializeUser(async (userObject, done) => {
   const authenticatedUser = parseUser(userObject);
-  const user = await db.fetchUser(authenticatedUser.accountId);
+  const user = await db.fetchUserByAccountId(authenticatedUser.accountId);
 
   if (!user) {
-    const { id } = await db.createHousehold();
-    await db.createUser({ ...authenticatedUser, householdId: id });
+    const { id: householdId } = await db.createHousehold(
+      authenticatedUser.accountId
+    );
+    await db.createUser({ ...authenticatedUser, householdId });
     done(null, {
       accountId: authenticatedUser.accountId,
       email: authenticatedUser.email,
-      householdId: id,
+      householdId,
     });
   } else {
     done(null, {
@@ -38,7 +40,9 @@ passport.serializeUser(async (userObject, done) => {
 });
 
 // used on ever request post sign in
-passport.deserializeUser(async (obj, done) => done(null, obj));
+passport.deserializeUser((obj, done) => {
+  done(null, obj);
+});
 
 // register strategy & initialize passport to apply strategies
 app.use(passport.use(googleStrategy).initialize());

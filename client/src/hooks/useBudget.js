@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 const GRAPHQL_URL = "http://localhost:3001/graphql";
 
 const useBudget = () => {
-  const [bills, setBills] = useState();
-  const [sinkingFunds, setSinkingFunds] = useState();
+  const [household, setHousehold] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
   async function fetchHousehold() {
@@ -20,6 +19,13 @@ const useBudget = () => {
         query Household {
           household {
             id
+            members {
+              accountId
+              email
+              name
+              avatar
+              role
+            }
             activeBudget {
               start
               end
@@ -83,9 +89,7 @@ const useBudget = () => {
       }
     );
 
-    const { bills, sinkingFunds } = household;
-    setBills(bills);
-    setSinkingFunds(sinkingFunds);
+    setHousehold(household);
     setIsLoading(false);
   }
 
@@ -106,8 +110,10 @@ const useBudget = () => {
       data: {
         data: { updateSinkingFund: updatedSinkingFunds },
       },
-    } = await axios.post(GRAPHQL_URL, {
-      query: `
+    } = await axios.post(
+      GRAPHQL_URL,
+      {
+        query: `
       mutation UpdateSinkingFund($input: UpdateSinkingFundInput!) {
         updateSinkingFund(input: $input) {
           id
@@ -119,12 +125,14 @@ const useBudget = () => {
           endDate
         }
       }`,
-      variables: {
-        input: { id, name, targetAmount, totalSaved, endDate },
+        variables: {
+          input: { id, name, targetAmount, totalSaved, endDate },
+        },
       },
-    });
+      { withCredentials: true }
+    );
 
-    setSinkingFunds(updatedSinkingFunds);
+    setHousehold((prev) => ({ ...prev, sinkingFunds: updatedSinkingFunds }));
     setIsLoading(false);
   };
 
@@ -135,8 +143,10 @@ const useBudget = () => {
       data: {
         data: { deleteSinkingFund: updatedSinkingFunds },
       },
-    } = await axios.post(GRAPHQL_URL, {
-      query: `
+    } = await axios.post(
+      GRAPHQL_URL,
+      {
+        query: `
       mutation DeleteSinkingFund($id: ID!) {
         deleteSinkingFund(id: $id) {
           id
@@ -148,10 +158,12 @@ const useBudget = () => {
           endDate
         }
       }`,
-      variables: { id },
-    });
+        variables: { id },
+      },
+      { withCredentials: true }
+    );
 
-    setSinkingFunds(updatedSinkingFunds);
+    setHousehold((prev) => ({ ...prev, sinkingFunds: updatedSinkingFunds }));
     setIsLoading(false);
   };
 
@@ -161,8 +173,10 @@ const useBudget = () => {
       data: {
         data: { addNewSinkingFund: updatedSinkingFunds },
       },
-    } = await axios.post(GRAPHQL_URL, {
-      query: `
+    } = await axios.post(
+      GRAPHQL_URL,
+      {
+        query: `
       mutation AddNewSinkingFund($input: SinkingFundInput!) {
         addNewSinkingFund(input: $input) {
           id
@@ -179,10 +193,12 @@ const useBudget = () => {
           endDate
         }
       }`,
-      variables: { input: sinkingFund },
-    });
+        variables: { input: sinkingFund },
+      },
+      { withCredentials: true }
+    );
 
-    setSinkingFunds(updatedSinkingFunds);
+    setHousehold((prev) => ({ ...prev, sinkingFunds: updatedSinkingFunds }));
     setIsLoading(false);
   };
 
@@ -192,8 +208,10 @@ const useBudget = () => {
       data: {
         data: { addNewBill: updatedBills },
       },
-    } = await axios.post(GRAPHQL_URL, {
-      query: `
+    } = await axios.post(
+      GRAPHQL_URL,
+      {
+        query: `
       mutation AddNewBill($input: AddBillInput!) {
         addNewBill(input: $input) {
           id
@@ -205,10 +223,12 @@ const useBudget = () => {
           frequency
         }
       }`,
-      variables: { input: bill },
-    });
+        variables: { input: bill },
+      },
+      { withCredentials: true }
+    );
 
-    setBills(updatedBills);
+    setHousehold((prev) => ({ ...prev, bills: updatedBills }));
     setIsLoading(false);
   };
 
@@ -216,10 +236,12 @@ const useBudget = () => {
     setIsLoading(true);
     const {
       data: {
-        data: { deleteBill },
+        data: { deleteBill: updatedBills },
       },
-    } = await axios.post(GRAPHQL_URL, {
-      query: `
+    } = await axios.post(
+      GRAPHQL_URL,
+      {
+        query: `
       mutation DeleteBill($id: ID!) {
         deleteBill(id: $id) {
           id
@@ -232,10 +254,12 @@ const useBudget = () => {
         }
       }
       `,
-      variables: { id },
-    });
+        variables: { id },
+      },
+      { withCredentials: true }
+    );
 
-    setBills(deleteBill);
+    setHousehold((prev) => ({ ...prev, bills: updatedBills }));
     setIsLoading(false);
   };
 
@@ -243,10 +267,12 @@ const useBudget = () => {
     setIsLoading(true);
     const {
       data: {
-        data: { updateBill },
+        data: { updateBill: updatedBills },
       },
-    } = await axios.post(GRAPHQL_URL, {
-      query: `
+    } = await axios.post(
+      GRAPHQL_URL,
+      {
+        query: `
       mutation UpdateBill($input: UpdateBillInput!) {
         updateBill(input: $input) {
           id
@@ -259,16 +285,17 @@ const useBudget = () => {
         }
       }
       `,
-      variables: { input: bill },
-    });
+        variables: { input: bill },
+      },
+      { withCredentials: true }
+    );
 
-    setBills(updateBill);
+    setHousehold((prev) => ({ ...prev, bills: updatedBills }));
     setIsLoading(false);
   };
 
   return {
-    bills,
-    sinkingFunds,
+    household,
     isLoading,
     addBill,
     addSinkingFund,

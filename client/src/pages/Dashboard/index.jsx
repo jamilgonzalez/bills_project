@@ -18,9 +18,8 @@ const Dashboard = () => {
   const endDate = searchParams.get("endDate");
 
   const {
+    household,
     isLoading,
-    bills,
-    sinkingFunds,
     addBill,
     deleteBill,
     updateBill,
@@ -37,7 +36,7 @@ const Dashboard = () => {
       case "bills":
         return (
           <BillsGrid
-            bills={bills}
+            bills={household?.bills}
             handleBillDelete={deleteBill}
             handleBillUpdate={updateBill}
             handleAddBill={addBill}
@@ -46,7 +45,7 @@ const Dashboard = () => {
       case "sinkingFunds":
         return (
           <SinkingFundGrid
-            sinkingFunds={sinkingFunds}
+            sinkingFunds={household?.sinkingFunds}
             handleAddSinkingFund={addSinkingFund}
             handleDeleteSinkingFund={deleteSinkingFund}
             handleUpdateSinkingFund={updateSinkingFund}

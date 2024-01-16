@@ -1,48 +1,8 @@
-const {
-  GraphQLNonNull,
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLID,
-  GraphQLEnumType,
-} = require("graphql");
+const { GraphQLNonNull } = require("graphql");
 
 const userResolver = require("./user.resolver");
 
-const Role = new GraphQLEnumType({
-  name: "role",
-  values: {
-    admin: {
-      value: "admin",
-    },
-    contributor: {
-      valvue: "contributor",
-    },
-  },
-});
-
-const User = new GraphQLObjectType({
-  name: "User",
-  fields: {
-    email: {
-      type: new GraphQLNonNull(GraphQLString),
-    },
-    name: {
-      type: new GraphQLNonNull(GraphQLString),
-    },
-    accountId: {
-      type: new GraphQLNonNull(GraphQLID),
-    },
-    avatar: {
-      type: new GraphQLNonNull(GraphQLString),
-    },
-    householdId: {
-      type: new GraphQLNonNull(GraphQLID),
-    },
-    role: {
-      type: new GraphQLNonNull(Role),
-    },
-  },
-});
+const User = require("../../User");
 
 const UserQuery = {
   user: {

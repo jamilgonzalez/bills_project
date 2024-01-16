@@ -3,7 +3,7 @@ const { USER_SCHEMA } = require("./schema");
 
 const userModel = model("User", USER_SCHEMA);
 
-async function fetchUser(accountId) {
+async function fetchUserByAccountId(accountId) {
   try {
     return await userModel.findOne({ accountId }, { _id: 0, __v: 0 });
   } catch (err) {
@@ -23,5 +23,5 @@ async function createUser(user) {
 
 module.exports = {
   createUser,
-  fetchUser,
+  fetchUserByAccountId,
 };

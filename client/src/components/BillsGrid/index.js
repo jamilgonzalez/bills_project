@@ -126,7 +126,7 @@ const BillsGrid = ({
         addRow: handleAddBill,
       }}
       modalProps={{
-        title: "Bills",
+        title: "Edit Bill",
         fields: formFields,
         updateFormFields: reset,
         clearFormFields: () => reset(DEFAULT_FORM),

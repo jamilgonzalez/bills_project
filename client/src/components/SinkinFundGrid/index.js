@@ -85,7 +85,7 @@ const SinkingFundGrid = ({
         addRow: handleAddSinkingFund,
       }}
       modalProps={{
-        title: "Sinking Funds",
+        title: "Edit Sinking Fund",
         fields: formFields,
         updateFormFields: reset,
         clearFormFields: () => reset(DEFAULT_FORM),

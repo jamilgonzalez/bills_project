@@ -86,66 +86,40 @@ const BaseGrid = ({
           />
         </Grid>
         <EditModal
+          title={title}
           isOpen={isModalOpen}
           handleClose={() => {
             clearFormFields();
             setIsModalOpen(false);
-          }}>
-          <Grid container sx={{ padding: "15px" }} spacing={5}>
-            <Grid item xs={12}>
-              <Typography variant="h3">{title}</Typography>
-            </Grid>
-            {fields}
-          </Grid>
-          <Grid
-            container
-            sx={{ marginTop: "150px", textAlign: "center" }}
-            item
-            xs={12}
-            justifyContent={"flex-end"}
-            alignContent={"center"}>
-            <Grid item xs={1}>
-              <Button
-                onClick={() => {
-                  clearFormFields();
-                  setIsModalOpen(false);
-                }}>
-                Cancel
-              </Button>
-            </Grid>
-            <Grid item xs={2}>
-              <Button
-                onClick={submitForm(async (data) => {
-                  const isAddingNewRow = !data.id;
-                  let message;
-                  try {
-                    if (isAddingNewRow) {
-                      await addRow(data);
-                      message = `${data.name} has been added successfully!`;
-                    } else {
-                      await updateRow(data);
-                      message = `${data.name} has been updated successfully!`;
-                    }
-                    updateSnackbarState({
-                      severity: "success",
-                      message,
-                      isOpen: true,
-                    });
-                    setIsModalOpen(false);
-                  } catch (err) {
-                    console.error(err);
-                    updateSnackbarState({
-                      severity: "error",
-                      message: `Error updating ${data.name}.`,
-                      isOpen: true,
-                    });
-                  }
-                  clearFormFields();
-                })}>
-                Submit
-              </Button>
-            </Grid>
-          </Grid>
+          }}
+          handleOnSubmit={submitForm(async (data) => {
+            const isAddingNewRow = !data.id;
+            let message;
+            try {
+              if (isAddingNewRow) {
+                await addRow(data);
+                message = `${data.name} has been added successfully!`;
+              } else {
+                await updateRow(data);
+                message = `${data.name} has been updated successfully!`;
+              }
+              updateSnackbarState({
+                severity: "success",
+                message,
+                isOpen: true,
+              });
+              setIsModalOpen(false);
+            } catch (err) {
+              console.error(err);
+              updateSnackbarState({
+                severity: "error",
+                message: `Error updating ${data.name}.`,
+                isOpen: true,
+              });
+            }
+            clearFormFields();
+          })}>
+          {fields}
         </EditModal>
       </Grid>
     )
